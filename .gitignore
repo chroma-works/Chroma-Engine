@@ -1,32 +1,8 @@
-# Prerequisites
-*.d
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+bin/\.vs/
 
-# Precompiled Headers
-*.gch
-*.pch
+bin/Debug/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+build/
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+bin/lib/Debug/glfw3\.lib
