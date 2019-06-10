@@ -25,6 +25,9 @@ option(GLFW_BUILD_TESTS "Build the GLFW test programs" OFF)
 option(GLFW_BUILD_DOCS "Build the GLFW documentation" OFF)
 add_subdirectory(src/thirdparty/glfw-3.3)
 
+#include spdlog
+add_subdirectory(src/thirdparty/spdlog-1.3.1)
+
 set (thirdparty_sources
     #src/thirdparty/gl3w/include/GL/gl3w.h
     #src/thirdparty/gl3w/include/GL/glcorearb.h
@@ -86,6 +89,9 @@ target_link_libraries(chroma ${OPENGL_gl_LIBRARY})
 # Link to glfw
 target_link_libraries(chroma glfw)
 
+#Link spdlog
+target_link_libraries(chroma spdlog)
+
 #Windows
 add_definitions(-DNOC_FILE_DIALOG_IMPLEMENTATION)
 add_definitions(-DNOC_FILE_DIALOG_WIN32)
@@ -97,3 +103,6 @@ set_target_properties(
 set_target_properties(
     chroma
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY  "${CMAKE_SOURCE_DIR}/bin/$(Configuration)")
+
+# Create logs directory
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/logs")
