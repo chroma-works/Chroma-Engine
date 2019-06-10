@@ -2,12 +2,11 @@
 #include <stdio.h>
 
 #include "chroma/window/Window.h"
-
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+#include <chroma/main/Log.h>
 
 int main(int argc, char const* argv[]) 
 {
+    Chroma::Log::Init();
     Chroma::WindowProps props = Chroma::WindowProps();
     Chroma::Window* window = new Chroma::Window(props);
 
@@ -19,12 +18,4 @@ int main(int argc, char const* argv[])
     }
 
     return 0;
-}
-
-// Is called whenever a key is pressed/released via GLFW
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-    std::cout << key << std::endl;
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
 }

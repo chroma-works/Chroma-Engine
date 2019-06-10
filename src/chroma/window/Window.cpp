@@ -1,4 +1,5 @@
 #include "Window.h"
+#include <chroma/main/Log.h>
 #include <chroma/openGL/OpenGLContext.h>
 
 namespace Chroma
@@ -25,7 +26,7 @@ namespace Chroma
             // TODO: glfwTerminate on system shutdown
             int success = glfwInit();
             if (success == 0)
-                std::cout << "Could not intialize GLFW!" << std::endl;;
+                CH_ERROR("Could not intialize GLFW!\n");
             //glfwSetErrorCallback(GLFWErrorCallback);
             s_GLFW_initialized = true;
         }
@@ -81,7 +82,7 @@ namespace Chroma
                 break;
             }
             }*/
-            std::cout << key << std::endl;
+           CH_TRACE( key );
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
                 glfwSetWindowShouldClose(window, GL_TRUE);
         });
