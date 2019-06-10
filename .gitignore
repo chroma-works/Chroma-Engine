@@ -8,3 +8,5 @@ build/
 bin/lib/Debug/glfw3\.lib
 
 \.vs/
+
+bin/
