@@ -13,7 +13,10 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release)
 include_directories(src)
 
 set (main_sources
-     src/chroma/main/main.cpp)
+     src/chroma/main/main.cpp
+     src/chroma/main/Log.h
+     src/chroma/main/Log.cpp
+)
 
 source_group ("main\\" FILES
     ${main_sources}
