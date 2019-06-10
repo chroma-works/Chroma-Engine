@@ -13,7 +13,7 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release)
 include_directories(src)
 
 set (main_sources
-src/chroma/main/main.cpp)
+     src/chroma/main/main.cpp)
 
 source_group ("main\\" FILES
     ${main_sources}
@@ -46,8 +46,36 @@ source_group ("thirdparty\\" FILES
     ${thirdparty_sources}
 )
 
+set (opengl_sources
+    src/chroma/openGL/OpenGLContext.h
+    src/chroma/openGL/OpenGLContext.cpp
+)
+
+source_group ("opengl\\" FILES
+    ${opengl_sources}
+)
+
+set(window_sources
+    src/chroma/window/Window.h
+    src/chroma/window/Window.cpp)
+
+source_group ("window\\" FILES
+    ${window_sources}
+)
+
+set(renderer_sources
+    src/chroma/renderer/RenderContext.h
+)
+
+source_group ("renderer\\" FILES
+    ${renderer_sources}
+)
+
 add_executable (chroma
     ${main_sources}
+    ${opengl_sources}
+    ${renderer_sources}
+    ${window_sources}
     ${thirdparty_sources}
 )
 
