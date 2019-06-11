@@ -61,6 +61,15 @@ source_group ("opengl\\" FILES
     ${opengl_sources}
 )
 
+set ( event_sources
+    src/chroma/events/Event.h
+    src/chroma/events/KeyEvent.h
+)
+
+source_group ("events\\" FILES
+    ${event_sources}
+)
+
 set(window_sources
     src/chroma/window/Window.h
     src/chroma/window/Window.cpp)
@@ -83,6 +92,7 @@ add_executable (chroma
     ${renderer_sources}
     ${window_sources}
     ${thirdparty_sources}
+    ${event_sources}
 )
 
 # Find and link to OpenGL
