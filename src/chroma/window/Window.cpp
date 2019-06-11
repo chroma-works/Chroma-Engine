@@ -1,6 +1,7 @@
 #include "Window.h"
 #include <chroma/main/Log.h>
 #include <chroma/openGL/OpenGLContext.h>
+#include <chroma/events/KeyEvent.h>
 
 namespace Chroma
 {
@@ -61,28 +62,31 @@ namespace Chroma
         {
             WindowProps& data = *(WindowProps*)glfwGetWindowUserPointer(window);
 
-            /*switch (action)
+            switch (action)
             {
             case GLFW_PRESS:
             {
                 KeyPressedEvent event(key, 0);
-                data.EventCallback(event);
+                //data.EventCallback(event);
+                CH_TRACE((event).ToString());
                 break;
             }
             case GLFW_RELEASE:
             {
                 KeyReleasedEvent event(key);
-                data.EventCallback(event);
+                //data.EventCallback(event);
+                CH_TRACE((event).ToString());
                 break;
             }
             case GLFW_REPEAT:
             {
                 KeyPressedEvent event(key, 1);
-                data.EventCallback(event);
+                //data.EventCallback(event);
+                CH_TRACE((event).ToString());
                 break;
             }
-            }*/
-           CH_TRACE( key );
+            }
+           //CH_TRACE( key );
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
                 glfwSetWindowShouldClose(window, GL_TRUE);
         });
