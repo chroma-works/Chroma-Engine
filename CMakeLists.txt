@@ -64,6 +64,7 @@ source_group ("opengl\\" FILES
 set ( event_sources
     src/chroma/events/Event.h
     src/chroma/events/KeyEvent.h
+    src/chroma/events/ApplicationEvent.h
 )
 
 source_group ("events\\" FILES
