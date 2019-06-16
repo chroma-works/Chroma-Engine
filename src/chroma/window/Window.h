@@ -40,7 +40,7 @@ namespace Chroma
 
         void OnUpdate();
 
-        //inline void SetEventCallback(void* callback) { m_event_call_back = callback; }
+        inline void SetEventCallback(std::function<void(Event&)> callback) { m_data.EventCallback = callback; }
 
         void SetVSync(bool enabled);
         bool IsVSync() const;
