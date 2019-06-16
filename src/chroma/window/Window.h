@@ -2,9 +2,19 @@
 #include <iostream>
 #include <stdio.h>
 #include <chroma/renderer/RenderContext.h>
+#include <functional>
+#include <chroma/events/Event.h>
 
 namespace Chroma
 {
+    struct WindowData
+    {
+        int Width;
+        int Height;
+        std::string Title;
+
+        std::function<void(Event&)> EventCallback;
+    };
     struct WindowProps
     {
         std::string m_window_title;
@@ -25,8 +35,8 @@ namespace Chroma
         Window(const WindowProps& props);
         virtual ~Window();
 
-        inline int GetWidth() { return m_props.m_window_width; }
-        inline int GetHeight() { return m_props.m_window_height; }
+        inline int GetWidth() { return m_data.Width; }
+        inline int GetHeight() { return m_data.Height; }
 
         void OnUpdate();
 
@@ -36,13 +46,11 @@ namespace Chroma
         bool IsVSync() const;
 
     private:
-        WindowProps m_props;
         RenderContext* m_context;
         bool m_vsync;
 
 
-        void* m_event_call_back;
-
+        WindowData m_data;
 
 
         virtual void Init(const WindowProps& props);

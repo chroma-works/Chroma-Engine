@@ -2,6 +2,7 @@
 #include <chroma/main/Log.h>
 #include <chroma/openGL/OpenGLContext.h>
 #include <chroma/events/KeyEvent.h>
+#include <chroma/events/ApplicationEvent.h>
 
 namespace Chroma
 {
@@ -20,7 +21,9 @@ namespace Chroma
 
     void Window::Init(const WindowProps& props)
     {
-        m_props = props;
+        m_data.Height = props.m_window_height;
+        m_data.Width = props.m_window_width;
+        m_data.Title = props.m_window_title;
 
         if (!s_GLFW_initialized)
         {
@@ -32,23 +35,23 @@ namespace Chroma
             s_GLFW_initialized = true;
         }
 
-        m_window_handle = glfwCreateWindow((int)props.m_window_width, (int)props.m_window_height, m_props.m_window_title.c_str(), nullptr, nullptr);
+        m_window_handle = glfwCreateWindow((int)m_data.Width, (int)m_data.Height, m_data.Title.c_str(), nullptr, nullptr);
 
         m_context = new OpenGLContext(m_window_handle);
         m_context->Init();
 
-        glfwSetWindowUserPointer(m_window_handle, &m_props);
+        glfwSetWindowUserPointer(m_window_handle, &m_data);
         SetVSync(true);
 
         // Set GLFW callbacks
         glfwSetWindowSizeCallback(m_window_handle, [](GLFWwindow* window, int width, int height)
         {
-            WindowProps& data = *(WindowProps*)glfwGetWindowUserPointer(window);
-            data.m_window_width = width;
-            data.m_window_height = height;
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            data.Width = width;
+            data.Height = height;
 
-            /*WindowResizeEvent event(width, height);
-            data.EventCallback(event);*/
+            WindowResizeEvent event(width, height);
+            data.EventCallback(event);
         });
 
         /*glfwSetWindowCloseCallback(m_window, [](GLFWwindow* window)
