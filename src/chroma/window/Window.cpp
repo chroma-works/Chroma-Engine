@@ -63,35 +63,32 @@ namespace Chroma
 
         glfwSetKeyCallback(m_window_handle, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {
-            WindowProps& data = *(WindowProps*)glfwGetWindowUserPointer(window);
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
             switch (action)
             {
             case GLFW_PRESS:
             {
                 KeyPressedEvent event(key, 0);
-                //data.EventCallback(event);
-                CH_TRACE((event).ToString());
+                data.EventCallback(event);
+                //CH_TRACE((event).ToString());
                 break;
             }
             case GLFW_RELEASE:
             {
                 KeyReleasedEvent event(key);
-                //data.EventCallback(event);
-                CH_TRACE((event).ToString());
+                data.EventCallback(event);
+                //CH_TRACE((event).ToString());
                 break;
             }
             case GLFW_REPEAT:
             {
                 KeyPressedEvent event(key, 1);
-                //data.EventCallback(event);
-                CH_TRACE((event).ToString());
+                data.EventCallback(event);
+                //CH_TRACE((event).ToString());
                 break;
             }
             }
-           //CH_TRACE( key );
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-                glfwSetWindowShouldClose(window, GL_TRUE);
         });
 
         glfwSetCharCallback(m_window_handle, [](GLFWwindow* window, unsigned int keycode)

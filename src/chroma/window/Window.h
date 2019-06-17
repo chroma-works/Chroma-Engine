@@ -30,8 +30,6 @@ namespace Chroma
     class Window
     {
     public:
-        GLFWwindow* m_window_handle;
-
         Window(const WindowProps& props);
         virtual ~Window();
 
@@ -46,6 +44,7 @@ namespace Chroma
         bool IsVSync() const;
 
     private:
+        GLFWwindow* m_window_handle;
         RenderContext* m_context;
         bool m_vsync;
 
