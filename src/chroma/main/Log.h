@@ -20,3 +20,4 @@ namespace Chroma {
 #define CH_WARN(...)     ::Chroma::Log::GetLogger()->warn(__VA_ARGS__)
 #define CH_ERROR(...)    ::Chroma::Log::GetLogger()->error(__VA_ARGS__)
 #define CH_FATAL(...)    ::Chroma::Log::GetLogger()->fatal(__VA_ARGS__)
+#define CH_ASSERT(x, ...) { if(!(x)) { CH_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
