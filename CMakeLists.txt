@@ -16,6 +16,9 @@ set (main_sources
      src/chroma/main/main.cpp
      src/chroma/main/Log.h
      src/chroma/main/Log.cpp
+     src/chroma/main/Application.h
+     src/chroma/main/Application.cpp
+
 )
 
 source_group ("main\\" FILES
