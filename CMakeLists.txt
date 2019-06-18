@@ -18,7 +18,6 @@ set (main_sources
      src/chroma/main/Log.cpp
      src/chroma/main/Application.h
      src/chroma/main/Application.cpp
-
 )
 
 source_group ("main\\" FILES
@@ -84,6 +83,7 @@ source_group ("window\\" FILES
 
 set(renderer_sources
     src/chroma/renderer/RenderContext.h
+    src/chroma/renderer/Layer.h
 )
 
 source_group ("renderer\\" FILES
