@@ -27,7 +27,6 @@ namespace Chroma
     {
         while (m_running)
         {
-            glClearColor(0.584f, 0.062f, 0.529f, 1.0f);
             m_window->OnUpdate();
         }
     }
