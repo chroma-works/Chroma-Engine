@@ -60,8 +60,7 @@ namespace Chroma
     public:
         EventDispatcher(Event& event)
             : m_event(event)
-        {
-        }
+        {}
 
         template<typename T>
         bool Dispatch(EventFn<T> func)
