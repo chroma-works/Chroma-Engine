@@ -1,8 +1,11 @@
+#pragma once
+
 #include "Window.h"
 #include <chroma/main/Log.h>
 #include <chroma/openGL/OpenGLContext.h>
 #include <chroma/events/KeyEvent.h>
 #include <chroma/events/ApplicationEvent.h>
+#include <chroma/events/MouseEvent.h>
 
 namespace Chroma
 {
@@ -99,7 +102,7 @@ namespace Chroma
             data.EventCallback(event);
         });
 
-        /*glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+        glfwSetMouseButtonCallback(m_window_handle, [](GLFWwindow* window, int button, int action, int mods)
         {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
@@ -120,7 +123,7 @@ namespace Chroma
             }
         });
 
-        glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset)
+        glfwSetScrollCallback(m_window_handle, [](GLFWwindow* window, double xOffset, double yOffset)
         {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
@@ -128,13 +131,13 @@ namespace Chroma
             data.EventCallback(event);
         });
 
-        glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
+        glfwSetCursorPosCallback(m_window_handle, [](GLFWwindow* window, double xPos, double yPos)
         {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
             MouseMovedEvent event((float)xPos, (float)yPos);
             data.EventCallback(event);
-        });*/
+        });
     }
 
 
