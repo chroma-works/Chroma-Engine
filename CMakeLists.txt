@@ -67,6 +67,7 @@ set ( event_sources
     src/chroma/events/Event.h
     src/chroma/events/KeyEvent.h
     src/chroma/events/ApplicationEvent.h
+    src/chroma/events/MouseEvent.h
 )
 
 source_group ("events\\" FILES
