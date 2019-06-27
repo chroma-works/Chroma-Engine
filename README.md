@@ -4,7 +4,7 @@ A Render Engine
 Hebele hübele
 
 ## Build Instructions (for Windows)
-Download [CMake](https://cmake.org/download/) if you dont it already.  
+Download [CMake](https://cmake.org/download/) if you dont have it already.  
 Launch CMake  
 Enter the "Where is the source code:" as the root directory of the repository(**where CMakeLists.txt is**).  
 Enter the "Where to build binaries" as the **root_directory_of_the_repo/build**.  
