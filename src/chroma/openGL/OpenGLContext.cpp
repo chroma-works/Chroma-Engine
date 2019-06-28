@@ -39,8 +39,6 @@ namespace Chroma
 
     void OpenGLContext::SwapBuffers()
     {
-        glClearColor(0.184f, 0.062f, 0.129f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
         glfwSwapBuffers(m_window_handle);
     }
 }
