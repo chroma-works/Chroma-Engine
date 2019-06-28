@@ -10,5 +10,6 @@ int main(int argc, char const* argv[])
     Chroma::Application* app = new Chroma::Application();
 
     app->Run();
+    delete app;
     return 0;
 }
