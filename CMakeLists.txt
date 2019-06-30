@@ -85,6 +85,8 @@ source_group ("window\\" FILES
 set(renderer_sources
     src/chroma/renderer/RenderContext.h
     src/chroma/renderer/Layer.h
+    src//chroma/renderer/Shader.h
+    src//chroma/renderer/Shader.cpp
 )
 
 source_group ("renderer\\" FILES
