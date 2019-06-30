@@ -12,7 +12,7 @@ namespace Chroma
         ~Shader();
 
         void Bind() const;
-        void UnBind() const;
+        void Unbind() const;
 
     private:
         unsigned int CompileShader(unsigned int type, const std::string & source);
