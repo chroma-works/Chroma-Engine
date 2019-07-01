@@ -74,7 +74,7 @@ namespace Chroma
         glUseProgram(m_renderer_id);
     }
 
-    void Shader::UnBind() const
+    void Shader::Unbind() const
     {
         glUseProgram(0);
     }
