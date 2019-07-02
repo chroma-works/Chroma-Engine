@@ -54,7 +54,7 @@ namespace Chroma
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             // 1st attribute buffer : vertices
             glEnableVertexAttribArray(0);
-            //glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+
             vertex_buffer.Bind();
             glVertexAttribPointer(
                 0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
