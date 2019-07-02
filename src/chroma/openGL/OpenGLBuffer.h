@@ -24,7 +24,5 @@ namespace Chroma
 
         /*void* MapBuffer();
         void UnmapBuffer();*/
-
-    private:
     };
 }
