@@ -15,7 +15,6 @@ namespace Chroma
         std::string fragment_shader_src;
         if (read_from_file)
         {
-
             std::ifstream vertex_shader_stream(vertex_shader_data, std::ios::in);
             if (vertex_shader_stream.is_open()) 
             {
@@ -62,6 +61,8 @@ namespace Chroma
 
         glDeleteShader(vertex_shader);
         glDeleteShader(fragment_shader);
+
+        CH_INFO("Shaders compiled and linked successfully");
     }
 
     Shader::~Shader()
