@@ -57,6 +57,8 @@ source_group ("thirdparty\\" FILES
 set (opengl_sources
     src/chroma/openGL/OpenGLContext.h
     src/chroma/openGL/OpenGLContext.cpp
+    src/chroma/openGL/openGLBuffer.h
+    src/chroma/openGL/openGLBuffer.cpp
 )
 
 source_group ("opengl\\" FILES
