@@ -59,6 +59,8 @@ set (opengl_sources
     src/chroma/openGL/OpenGLContext.cpp
     src/chroma/openGL/openGLBuffer.h
     src/chroma/openGL/openGLBuffer.cpp
+    src/chroma/openGL/openGLVertexArrayObject.h
+    src/chroma/openGL/openGLVertexArrayObject.cpp
 )
 
 source_group ("opengl\\" FILES
