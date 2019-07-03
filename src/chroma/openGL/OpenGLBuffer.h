@@ -26,4 +26,27 @@ namespace Chroma
         /*void* MapBuffer();
         void UnmapBuffer();*/
     };
+
+
+    class OpenGLIndexBuffer : public IndexBuffer
+    {
+    public:
+        OpenGLIndexBuffer();
+        OpenGLIndexBuffer(const void* vertices, unsigned int size);
+        ~OpenGLIndexBuffer();
+
+        void Bind() const override;
+        void Unbind() const override;
+
+        void SetBufferStorage(const void* data, unsigned int size);
+        void SetBufferSubData(const void* data, long long int offset, unsigned int size);
+
+        void ClearBufferData(const void * data);
+        void ClearBufferSubData(const void* data, long long int offset, unsigned int size);
+
+        void CopyBufferSubData(const OpenGLIndexBuffer& read_target, long long int readOffset, long long int writeOffset, unsigned int size);
+
+        /*void* MapBuffer();
+        void UnmapBuffer();*/
+    };
 }
