@@ -33,6 +33,25 @@ namespace Chroma
         return 0;
     }
 
+    static uint32_t GetShaderDataTypeCount(ShaderDataType type)
+    {
+        switch (type)
+        {
+        case ShaderDataType::Float:    return 1;
+        case ShaderDataType::Float2:   return 2;
+        case ShaderDataType::Float3:   return 3;
+        case ShaderDataType::Float4:   return 4;
+        case ShaderDataType::Int:      return 1;
+        case ShaderDataType::Int2:     return 2;
+        case ShaderDataType::Int3:     return 3;
+        case ShaderDataType::Int4:     return 4;
+        case ShaderDataType::Bool:     return 1;
+        }
+
+        CH_ASSERT(false, "Unknown ShaderDataType!");
+        return 0;
+    }
+
     struct VertexAttribute
     {
         std::string shader_var_name;
@@ -64,7 +83,8 @@ namespace Chroma
             m_attributes.push_back(attribute);
 
             unsigned int offset = 0;
-            for (int i = 0; i < m_attributes.size; i++)
+            m_stride = 0;
+            for (int i = 0; i < m_attributes.size(); i++)
             {
                 m_attributes[i].offset = offset;
                 offset += m_attributes[i].size;
@@ -73,7 +93,7 @@ namespace Chroma
             }
         }
 
-        inline uint32_t GetStride() const { return m_stride; }
+        inline unsigned int GetStride() const { return m_stride; }
         inline const std::vector<VertexAttribute>& GetElements() const { return m_attributes; }
 
     private:
@@ -94,11 +114,12 @@ namespace Chroma
     class VertexBuffer : public Buffer
     {
     public:
-        VertexBuffer(const void* vertices, unsigned int size);
+        //VertexBuffer(const void* vertices, unsigned int size);
         ~VertexBuffer() = default;
 
-        inline VertexBufferLayout GetBufferLayout() { return m_buffer_layout; }
-        inline void SetBufferLayout(VertexBufferLayout layout) { m_buffer_layout = m_buffer_layout; }
+        inline VertexBufferLayout& GetBufferLayout() { return m_buffer_layout; }
+        inline void SetBufferLayout(VertexBufferLayout& layout) { m_buffer_layout = layout; }
+
     private:
         VertexBufferLayout m_buffer_layout;
     };
@@ -106,7 +127,7 @@ namespace Chroma
     class IndexBuffer : public Buffer
     {
     public:
-        IndexBuffer(uint32_t* indices, unsigned int size);
+        //IndexBuffer(uint32_t* indices, unsigned int size);
         ~IndexBuffer() = default;
 
     private:
