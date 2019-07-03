@@ -39,16 +39,22 @@ namespace Chroma
         glClearColor(0.184f, 0.062f, 0.129f, 1.0f);
         // An array of 3 vectors which represents 3 vertices
         static const GLfloat g_vertex_buffer_data[] = {
-        -1.0f, -1.0f, 0.0f, 1.0f,  0.0f,  0.00f,
-        1.0f, -1.0f, 0.0f, 0.0f,  1.0f,  0.0f,
-        0.0f,  1.0f, 0.0f, 0.0f,  0.0f,  1.0f,
+        -1.0f, -1.0f, 0.0f, 1.0f,  1.0f,  0.00f,
+        1.0f, -1.0f, 0.0f, 1.0f,  1.0f,  0.0f,
+        1.0f,  1.0f, 0.0f, 0.0f,  0.0f,  1.0f,
+        -1.0f,  1.0f, 0.0f, 0.0f,  1.0f,  1.0f,
         };
+
+        static const GLint g_index_buffer_data[] = {0, 3, 2, 2, 1, 0};
 
 
         //Vertex Array object
         OpenGLVertexArrayObject vao;
         //vertex buffer
         OpenGLVertexBuffer vertex_buffer((void*)&g_vertex_buffer_data, sizeof(g_vertex_buffer_data));
+
+        //index buffer
+        OpenGLIndexBuffer index_buffer((void*)&g_index_buffer_data, sizeof(g_index_buffer_data));
 
         //attributes vertex coords and colors
         VertexAttribute layout_attribute("vertex_coords", 0, ShaderDataType::Float3, GL_FALSE);
@@ -62,6 +68,7 @@ namespace Chroma
         //Give vertex buffer the layout
         vertex_buffer.SetBufferLayout(vertex_buffer_layout);
         vao.SetVertexBuffer(vertex_buffer);
+        vao.SetIndexBuffer(index_buffer);
 
         vertex_buffer.Unbind();//To prove VAO works
 
@@ -76,10 +83,10 @@ namespace Chroma
 
             //vertexarrayobject is bounded and it keeps all the attribute information
             vao.Bind();
-            
+
             shader.Bind();
             // Draw the triangle !
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            glDrawElements(GL_TRIANGLES, index_buffer.GetSize(), GL_UNSIGNED_INT, NULL);
         }
     }
 
