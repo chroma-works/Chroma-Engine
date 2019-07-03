@@ -40,6 +40,16 @@ namespace Chroma
         }
     }
 
+    void OpenGLVertexArrayObject::SetIndexBuffer(OpenGLIndexBuffer& index_buffer)
+    {
+        glBindVertexArray(m_renderer_id);
+        index_buffer.Bind();
+
+        m_index_buffer = index_buffer;
+    }
+
+
+
     GLenum OpenGLVertexArrayObject::ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
     {
         switch (type)
