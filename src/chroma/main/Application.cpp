@@ -75,12 +75,11 @@ namespace Chroma
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             //vertexarrayobject is bounded and it keeps all the attribute information
-            vao.Bind();
+            //vao.Bind();
             
             shader.Bind();
             // Draw the triangle !
-            glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-            //glDisableVertexAttribArray(0);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
         }
     }
 
