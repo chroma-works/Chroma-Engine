@@ -129,8 +129,9 @@ namespace Chroma
     public:
         //IndexBuffer(uint32_t* indices, unsigned int size);
         ~IndexBuffer() = default;
+        inline unsigned int GetSize() { return m_size; }
 
-    private:
+    protected:
         unsigned int m_size;
 
     };
