@@ -57,6 +57,10 @@ source_group ("thirdparty\\" FILES
 set (opengl_sources
     src/chroma/openGL/OpenGLContext.h
     src/chroma/openGL/OpenGLContext.cpp
+    src/chroma/openGL/openGLBuffer.h
+    src/chroma/openGL/openGLBuffer.cpp
+    src/chroma/openGL/openGLVertexArrayObject.h
+    src/chroma/openGL/openGLVertexArrayObject.cpp
 )
 
 source_group ("opengl\\" FILES
@@ -85,6 +89,9 @@ source_group ("window\\" FILES
 set(renderer_sources
     src/chroma/renderer/RenderContext.h
     src/chroma/renderer/Layer.h
+    src/chroma/renderer/Shader.h
+    src/chroma/renderer/Shader.cpp
+    src/chroma/renderer/Buffer.h
 )
 
 source_group ("renderer\\" FILES
