@@ -2,6 +2,11 @@
 
 namespace Chroma
 {
+    OpenGLVertexBuffer::OpenGLVertexBuffer()
+    {
+        glGenBuffers(1, &m_renderer_id);
+        glBindBuffer(GL_ARRAY_BUFFER, m_renderer_id);
+    }
     OpenGLVertexBuffer::OpenGLVertexBuffer(const void* vertices, unsigned int size)
     {
         glGenBuffers(1, &m_renderer_id);

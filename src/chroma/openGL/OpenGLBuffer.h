@@ -5,9 +5,10 @@
 
 namespace Chroma
 {
-    class OpenGLVertexBuffer : public Buffer
+    class OpenGLVertexBuffer : public VertexBuffer
     {
     public:
+        OpenGLVertexBuffer();
         OpenGLVertexBuffer(const void* vertices, unsigned int size);
         ~OpenGLVertexBuffer();
 
