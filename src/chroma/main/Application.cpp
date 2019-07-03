@@ -75,7 +75,7 @@ namespace Chroma
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             //vertexarrayobject is bounded and it keeps all the attribute information
-            //vao.Bind();
+            vao.Bind();
             
             shader.Bind();
             // Draw the triangle !
