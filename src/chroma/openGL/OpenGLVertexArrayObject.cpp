@@ -21,7 +21,7 @@ namespace Chroma
     void OpenGLVertexArrayObject::SetVertexBuffer(OpenGLVertexBuffer& vertex_buffer)
     {
         m_vertex_buffer = vertex_buffer;
-        CH_ASSERT(vertex_buffer.GetBufferLayout().GetElements().size(), "Buffer has no layout!")
+        CH_ASSERT(vertex_buffer.GetBufferLayout().GetElements().size(), "Buffer has no layout!");
 
         glBindVertexArray(m_renderer_id);
         vertex_buffer.Bind();

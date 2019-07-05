@@ -62,8 +62,8 @@ namespace Chroma
         ShaderDataType data_type;
 
         VertexAttribute() = default;
-        VertexAttribute(std::string name, unsigned int index, ShaderDataType data_type, 
-            bool normalized = false, unsigned int offset = 0) 
+        VertexAttribute(std::string name, unsigned int index, ShaderDataType data_type,
+            bool normalized = false, unsigned int offset = 0)
             :shader_var_name(name), shader_index(index), data_type(data_type), size(GetShaderDataTypeSize(data_type)),
             normalized(normalized), offset(offset)
         {}

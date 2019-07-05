@@ -9,7 +9,7 @@
 
 namespace Chroma
 {
-    Shader::Shader(const std::string& vertex_shader_data, const std::string& fragment_shader_data, bool read_from_file = false)
+    Shader::Shader(const std::string& vertex_shader_data, const std::string& fragment_shader_data, bool read_from_file)
     {
         std::string vertex_shader_src;
         std::string fragment_shader_src;
@@ -79,6 +79,26 @@ namespace Chroma
     {
         glUseProgram(0);
     }
+
+    /*void Shader::AddUniform(std::shared_ptr<Uniform> uniform)
+    {
+        for (int i = 0; i < m_uniforms.size(); i++)
+        {
+            if (uniform->shader_var_name.compare(m_uniforms[i]->shader_var_name) == 0)
+            {
+                CH_WARN("Uniform " + uniform->shader_var_name + " is already added");
+                return;
+            }
+        }
+        int location = glGetUniformLocation(m_renderer_id, uniform->shader_var_name.c_str());
+        if (location == -1)
+            CH_WARN("Uniform " + uniform->shader_var_name + " does not exist!");
+        else
+        {
+            uniform->shader_index = location;
+            m_uniforms.push_back(uniform);
+        }
+    }*/
 
     unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
     {
