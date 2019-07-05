@@ -39,7 +39,7 @@ namespace Chroma
         glClearColor(0.184f, 0.062f, 0.129f, 1.0f);
         // An array of 3 vectors which represents 3 vertices
         static const GLfloat g_vertex_buffer_data[] = {
-        -1.0f, -1.0f, 0.0f, 1.0f,  1.0f,  0.00f,
+        -1.0f, -1.0f, 0.0f, 1.0f,  1.0f,  0.0f,
         1.0f, -1.0f, 0.0f, 1.0f,  1.0f,  0.0f,
         1.0f,  1.0f, 0.0f, 0.0f,  0.0f,  1.0f,
         -1.0f,  1.0f, 0.0f, 0.0f,  1.0f,  1.0f,
@@ -73,7 +73,7 @@ namespace Chroma
         vertex_buffer.Unbind();//To prove VAO works
 
         // Create and compile our GLSL program from the shaders
-        Shader shader("../assets/shaders/vs.shader", "../assets/shaders/fs.shader", Shader::READ_FILE_PATH);
+        Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/vs.shader", "../assets/shaders/fs.shader");
 
         while (m_running)
         {
@@ -84,10 +84,11 @@ namespace Chroma
             //vertexarrayobject is bounded and it keeps all the attribute information
             vao.Bind();
 
-            shader.Bind();
+            shader->Bind();
             // Draw the triangle !
             glDrawElements(GL_TRIANGLES, index_buffer.GetSize(), GL_UNSIGNED_INT, NULL);
         }
+        delete shader;
     }
 
     void Application::OnEvent(Event & e)
