@@ -74,6 +74,11 @@ namespace Chroma
 
         // Create and compile our GLSL program from the shaders
         Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/vs.shader", "../assets/shaders/fs.shader");
+        std::shared_ptr <glm::vec3> uniform_testcolor(new glm::vec3(1.0f, 0.0f, 0.0f));
+        /*shader->Bind();
+        int location = glGetUniformLocation(1, "testcolor");
+        glUniform3f(location, 0.0f, 0.0f, 1.0f);*/
+
 
         while (m_running)
         {
