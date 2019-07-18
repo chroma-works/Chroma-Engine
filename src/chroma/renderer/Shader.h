@@ -1,5 +1,6 @@
 #pragma once
 
+#include <thirdparty/glad/include/glad/glad.h>
 #include <stdio.h>
 #include <string>
 #include <chroma/renderer/Buffer.h>
@@ -7,6 +8,17 @@
 
 namespace Chroma
 {
+    struct Uniform
+    {
+        std::string shader_var_name;
+        unsigned int shader_location = -1;      //layout location in the shader
+        ShaderDataType data_type;
+        std::shared_ptr<void> data;
+
+        Uniform(std::string name, ShaderDataType data_type)
+            : shader_var_name(name), shader_location(-1), data_type(data_type)
+        {}
+    };
     class Shader
     {
     public:
@@ -25,13 +37,16 @@ namespace Chroma
 
         void Bind() const;
         void Unbind() const;
+        void CreateUniform(std::string name, ShaderDataType type, void* data);
+        void UpdateUniforms();
 
     private:
-
         static const bool READ_FILE_PATH = true;
         Shader(const std::string& vertex_shader, const std::string& fragment_shader, bool read_from_file = false);
         unsigned int CompileShader(unsigned int type, const std::string & source);
+        void AddUniform(Uniform uniform);
 
         uint32_t m_renderer_id;
+        std::vector<Uniform> m_uniforms;
     };
 }
