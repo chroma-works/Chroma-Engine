@@ -12,6 +12,8 @@
 #include <fstream>
 #include <thirdparty/glm/glm/glm.hpp>
 #include <thirdparty/glm//glm/gtc/matrix_transform.hpp>
+#include <chroma/renderer/Uniform.h>
+
 
 namespace Chroma
 {
@@ -79,9 +81,30 @@ namespace Chroma
         int location = glGetUniformLocation(1, "testcolor");
         glUniform3f(location, 0.0f, 0.0f, 1.0f);*/
 
+        float* data = new float[3];
+        data[0] = 0.0f;
+        data[1] = 0.0f;
+        data[2] = 1.0f;
+        //auto data = std::make_shared<float>(5.1);
+        /*Uniform uniform("testcolor", ShaderDataType::Float3);
+        uniform.data = data;*/
+        glm::mat4* Model = new glm::mat4(1.0); ;
+        *Model = glm::rotate(*Model, 1.00f, glm::vec3(0.0f, 0.0f, 1.0f));
 
+
+        shader->CreateUniform("testcolor", ShaderDataType::Float3, data);
+        shader->CreateUniform("u_Model", ShaderDataType::Mat4, Model);
+        shader->UpdateUniforms();
+
+        //shader->AddUniform(uniform);
+        float sign = 1.0f;
         while (m_running)
         {
+            sign = data[0] > 1.0f || data[0] < 0.0f ? -sign : sign;
+            data[0] += sign*0.01f;
+            *Model = glm::rotate(*Model, 0.01f, glm::vec3(0.0f, 0.5f, 1.0f));
+
+            shader->UpdateUniforms();
             m_window->OnUpdate();
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
