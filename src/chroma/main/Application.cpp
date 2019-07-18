@@ -12,7 +12,6 @@
 #include <fstream>
 #include <thirdparty/glm/glm/glm.hpp>
 #include <thirdparty/glm//glm/gtc/matrix_transform.hpp>
-#include <chroma/renderer/Uniform.h>
 
 
 namespace Chroma
