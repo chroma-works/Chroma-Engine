@@ -26,5 +26,6 @@ namespace Chroma
         static Application* s_instance;
 
         bool OnWindowClose(WindowCloseEvent& e);
+        bool OnWindowResize(WindowResizeEvent & e);
     };
 }
