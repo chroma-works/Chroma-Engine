@@ -82,7 +82,7 @@ namespace Chroma
     void Shader::CreateUniform(std::string name, ShaderDataType type, void* data)
     {
         Uniform uniform(name, type);
-        uniform.data = std::shared_ptr<void>(data);
+        uniform.data = data;
         AddUniform(uniform);
     }
 

@@ -100,7 +100,6 @@ namespace Chroma
 
         // Create and compile our GLSL program from the shaders
         Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/vs.shader", "../assets/shaders/fs.shader");
-        std::shared_ptr <glm::vec3> uniform_testcolor(new glm::vec3(1.0f, 0.0f, 0.0f));
 
         glEnable(GL_DEPTH_TEST);
 
@@ -118,7 +117,7 @@ namespace Chroma
 
         while (m_running)
         {
-            *proj = glm::perspective(glm::radians(45.0f), 1.0f * m_window->GetWidth() / m_window->GetHeight(), 0.1f, 10.0f);
+            //*proj = glm::perspective(glm::radians(45.0f), 1.0f * m_window->GetWidth() / m_window->GetHeight(), 0.1f, 10.0f);
             *model = glm::rotate(*model, 0.03f, glm::vec3(0.0f, 1.0f, 0.3f));
 
             shader->UpdateUniforms();
