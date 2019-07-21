@@ -3,6 +3,7 @@
 
 #include <chroma/main/Log.h>
 #include <chroma/main/Application.h>
+#include <thirdparty/glm/glm/glm.hpp>
 
 int main(int argc, char const* argv[]) 
 {

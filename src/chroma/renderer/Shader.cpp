@@ -1,15 +1,14 @@
 #pragma once
 
 #include <chroma/renderer/Shader.h>
-#include <thirdparty/glad/include/glad/glad.h>
 #include <chroma/main/Log.h>
 #include <sstream>
 #include <fstream>
-
+#include <thirdparty/glm/glm/glm.hpp>
 
 namespace Chroma
 {
-    Shader::Shader(const std::string& vertex_shader_data, const std::string& fragment_shader_data, bool read_from_file = false)
+    Shader::Shader(const std::string& vertex_shader_data, const std::string& fragment_shader_data, bool read_from_file)
     {
         std::string vertex_shader_src;
         std::string fragment_shader_src;
@@ -80,6 +79,68 @@ namespace Chroma
         glUseProgram(0);
     }
 
+    void Shader::CreateUniform(std::string name, ShaderDataType type, void* data)
+    {
+        Uniform uniform(name, type);
+        uniform.data = std::shared_ptr<void>(data);
+        AddUniform(uniform);
+    }
+
+    void Shader::UpdateUniforms()
+    {
+        Bind();
+        for (int i = 0; i < m_uniforms.size(); i++)
+        {
+            Uniform uniform = m_uniforms[i];
+            switch (uniform.data_type)
+            {
+            case ShaderDataType::Bool:
+                glUniform1i(uniform.shader_location, **(bool **)&(uniform).data);
+                break;
+            case ShaderDataType::Float4:
+                glUniform4f(uniform.shader_location, (*((float **)&uniform.data))[0],
+                    (*((float **)&uniform.data))[1], (*((float **)&uniform.data))[2],
+                    (*((float **)&uniform.data))[3]);
+                break;
+            case ShaderDataType::Float3:
+                glUniform3f(uniform.shader_location, (*((float **)&uniform.data))[0],
+                    (*((float **)&uniform.data))[1], (*((float **)&uniform.data))[2]);
+                break;
+            case ShaderDataType::Float2:
+                glUniform2f(uniform.shader_location, (*((float **)&uniform.data))[0],
+                    (*((float **)&uniform.data))[1]);
+                break;
+            case ShaderDataType::Float:
+                glUniform1f(uniform.shader_location, **(float **)&(uniform).data);
+                break;
+            case ShaderDataType::Int4:
+                glUniform4f(uniform.shader_location, (*((int **)&uniform.data))[0],
+                    (*((int **)&uniform.data))[1], (*((int **)&uniform.data))[2],
+                    (*((int **)&uniform.data))[3]);
+                break;
+            case ShaderDataType::Int3:
+                glUniform3f(uniform.shader_location, (*((int **)&uniform.data))[0],
+                    (*((int **)&uniform.data))[1], (*((int **)&uniform.data))[2]);
+                break;
+            case ShaderDataType::Int2:
+                glUniform2f(uniform.shader_location, (*((int **)&uniform.data))[0],
+                    (*((int **)&uniform.data))[1]);
+                break;
+            case ShaderDataType::Int:
+                glUniform1f(uniform.shader_location, **(int **)&(uniform).data);
+                break;
+            case ShaderDataType::Mat3:
+                glUniformMatrix3fv(uniform.shader_location, 1, GL_FALSE,  (((float **)&uniform.data))[0]);
+                break;
+            case ShaderDataType::Mat4:
+                glUniformMatrix4fv(uniform.shader_location, 1, GL_FALSE, (((float **)&uniform.data))[0]);
+                break;
+            default:
+                CH_ERROR("Unknown type!");
+            }
+        }
+    }
+
     unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
     {
         unsigned int id = glCreateShader(type);
@@ -105,5 +166,25 @@ namespace Chroma
         }
 
         return id;
+    }
+
+    void Shader::AddUniform(Uniform uniform)
+    {
+        for (int i = 0; i < m_uniforms.size(); i++)
+        {
+            if (uniform.shader_var_name.compare(m_uniforms[i].shader_var_name) == 0)
+            {
+                CH_WARN("Uniform " + uniform.shader_var_name + " is already added");
+                return;
+            }
+        }
+        int location = glGetUniformLocation(m_renderer_id, uniform.shader_var_name.c_str());
+        if (location == -1)
+            CH_WARN("Uniform " + uniform.shader_var_name + " does not exist!");
+        else
+        {
+            uniform.shader_location = location;
+            m_uniforms.push_back(uniform);
+        }
     }
 }
