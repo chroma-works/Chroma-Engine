@@ -16,12 +16,12 @@ namespace Chroma
     {
         switch (type)
         {
-        case ShaderDataType::Float:    return sizeof(float);
-        case ShaderDataType::Float2:   return sizeof(float) * 2;
-        case ShaderDataType::Float3:   return sizeof(float) * 3;
-        case ShaderDataType::Float4:   return sizeof(float) * 4;
-        case ShaderDataType::Mat3:     return sizeof(float) * 3 * 3;
-        case ShaderDataType::Mat4:     return sizeof(float) * 4 * 4;
+        case ShaderDataType::Float:    return 4;
+        case ShaderDataType::Float2:   return 4 * 2;
+        case ShaderDataType::Float3:   return 4 * 3;
+        case ShaderDataType::Float4:   return 4 * 4;
+        case ShaderDataType::Mat3:     return 4 * 3 * 3;
+        case ShaderDataType::Mat4:     return 4 * 4 * 4;
         case ShaderDataType::Int:      return sizeof(int);
         case ShaderDataType::Int2:     return sizeof(int) * 2;
         case ShaderDataType::Int3:     return sizeof(int) * 3;
@@ -55,7 +55,7 @@ namespace Chroma
     struct VertexAttribute
     {
         std::string shader_var_name;
-        unsigned int shader_index;
+        unsigned int shader_layout_index;
         unsigned int size;
         unsigned int offset;
         bool normalized;
@@ -64,7 +64,7 @@ namespace Chroma
         VertexAttribute() = default;
         VertexAttribute(std::string name, unsigned int index, ShaderDataType data_type,
             bool normalized = false, unsigned int offset = 0)
-            :shader_var_name(name), shader_index(index), data_type(data_type), size(GetShaderDataTypeSize(data_type)),
+            :shader_var_name(name), shader_layout_index(index), data_type(data_type), size(GetShaderDataTypeSize(data_type)),
             normalized(normalized), offset(offset)
         {}
 
