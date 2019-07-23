@@ -25,6 +25,27 @@ namespace Chroma
 
         /*void* MapBuffer();
         void UnmapBuffer();*/
+
+        //Apply RULE OF THREE
+        //Delete the copy constructor/assignment.
+        OpenGLVertexBuffer(const OpenGLVertexBuffer &) = delete;
+        OpenGLVertexBuffer &operator=(const OpenGLVertexBuffer &) = delete;
+
+        OpenGLVertexBuffer(OpenGLVertexBuffer &&other)
+        {
+            m_renderer_id = other.m_renderer_id;
+            other.m_renderer_id = 0;
+        }
+
+        OpenGLVertexBuffer &operator=(OpenGLVertexBuffer &&other)
+        {
+            if (this != &other)
+            {
+                Unbind();
+                std::swap(m_renderer_id, other.m_renderer_id);
+            }
+        }
+
     };
 
 
@@ -48,5 +69,25 @@ namespace Chroma
 
         /*void* MapBuffer();
         void UnmapBuffer();*/
+
+        //Apply RULE OF THREE
+        //Delete the copy constructor/assignment.
+        OpenGLIndexBuffer(const OpenGLIndexBuffer &) = delete;
+        OpenGLIndexBuffer &operator=(const OpenGLIndexBuffer &) = delete;
+
+        OpenGLIndexBuffer(OpenGLIndexBuffer &&other)
+        {
+            m_renderer_id = other.m_renderer_id;
+            other.m_renderer_id = 0;
+        }
+
+        OpenGLIndexBuffer &operator=(OpenGLIndexBuffer &&other)
+        {
+            if (this != &other)
+            {
+                Unbind();
+                std::swap(m_renderer_id, other.m_renderer_id);
+            }
+        }
     };
 }

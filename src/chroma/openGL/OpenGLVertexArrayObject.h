@@ -14,15 +14,15 @@ namespace Chroma
         void Bind() const;
         void Unbind() const;
 
-        void SetVertexBuffer(OpenGLVertexBuffer& vertex_buffer);
-        void SetIndexBuffer(OpenGLIndexBuffer& index_buffer);
+        void AddVertexBuffer(OpenGLVertexBuffer* vertex_buffer);
+        void SetIndexBuffer(OpenGLIndexBuffer* index_buffer);
 
     private:
 
         static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type);
 
-        OpenGLVertexBuffer m_vertex_buffer;
-        OpenGLIndexBuffer m_index_buffer;
+        std::vector<OpenGLVertexBuffer*> m_vertex_buffers;
+        OpenGLIndexBuffer* m_index_buffer;
         unsigned int m_renderer_id;
     };
 }

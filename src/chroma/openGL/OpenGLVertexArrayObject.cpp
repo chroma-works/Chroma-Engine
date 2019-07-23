@@ -18,34 +18,37 @@ namespace Chroma
     {
         glBindVertexArray(0);
     }
-    void OpenGLVertexArrayObject::SetVertexBuffer(OpenGLVertexBuffer& vertex_buffer)
+    void OpenGLVertexArrayObject::AddVertexBuffer(OpenGLVertexBuffer* vertex_buffer)
     {
-        m_vertex_buffer = vertex_buffer;
-        CH_ASSERT(vertex_buffer.GetBufferLayout().GetElements().size(), "Buffer has no layout!");
+        CH_ASSERT(vertex_buffer->GetBufferLayout().GetElements().size(), "Buffer has no layout!");
 
-        glBindVertexArray(m_renderer_id);
-        vertex_buffer.Bind();
+        Bind();
+        vertex_buffer->Bind();
 
-        const auto& layout = vertex_buffer.GetBufferLayout().GetElements();
-        for (int i = 0; i < layout.size(); i++)
+        m_vertex_buffers.push_back(vertex_buffer);
+
+        const auto& layout = vertex_buffer->GetBufferLayout().GetElements();
+        for (VertexAttribute element : layout)
         {
-            glEnableVertexAttribArray(layout[i].shader_index);
+            glVertexAttribPointer(element.shader_layout_index,
+                GetShaderDataTypeCount(element.data_type),
+                ShaderDataTypeToOpenGLBaseType(element.data_type),
+                element.normalized,
+                vertex_buffer->GetBufferLayout().GetStride(),
+                (const void*)element.offset);
 
-            glVertexAttribPointer(layout[i].shader_index,
-                GetShaderDataTypeCount(layout[i].data_type),
-                ShaderDataTypeToOpenGLBaseType(layout[i].data_type),
-                layout[i].normalized,
-                vertex_buffer.GetBufferLayout().GetStride(),
-                (const void*)layout[i].offset);
+            glEnableVertexAttribArray(element.shader_layout_index);
         }
+        Unbind();
     }
 
-    void OpenGLVertexArrayObject::SetIndexBuffer(OpenGLIndexBuffer& index_buffer)
+    void OpenGLVertexArrayObject::SetIndexBuffer(OpenGLIndexBuffer* index_buffer)
     {
-        glBindVertexArray(m_renderer_id);
-        index_buffer.Bind();
+        Bind();
+        index_buffer->Bind();
 
         m_index_buffer = index_buffer;
+        Unbind();
     }
 
 
