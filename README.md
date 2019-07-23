@@ -3,6 +3,9 @@ A Render Engine
 ![Chroma Logo](resources/logo.png)
 Hebele hübele
 
+## Some visuals from chroma
+![Rotating Cube](resources/images/cube.gif)
+
 ## Build Instructions (for Windows)
 Download [CMake](https://cmake.org/download/) if you dont have it already.  
 Launch CMake  
