@@ -4,9 +4,9 @@
 
 namespace Chroma
 {
-    OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
+    OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float near, float far)
     {
-        m_projection_matrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+        m_projection_matrix = glm::ortho(left, right, bottom, top, near, far);
         m_view_matrix = glm::mat4(1.0f);
         m_view_projection_matrix = m_projection_matrix * m_view_matrix;
     }

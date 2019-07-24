@@ -29,7 +29,7 @@ namespace Chroma
         glm::mat4 m_view_projection_matrix;
 
         glm::vec3 m_position = {0.0f, 0.0f, 0.0f};
-        glm::vec3 m_direction = { 0.0f, 0.0f, 1.0f };
+        glm::vec3 m_direction = { 0.0f, 0.0f, 0.0f };
         glm::vec3 m_vector_up = { 0.0f, 1.0f, 0.0f };
 
     };
@@ -37,7 +37,7 @@ namespace Chroma
     class OrthographicCamera : public Camera
     {
     public:
-        OrthographicCamera(float left, float right, float bottom, float top);
+        OrthographicCamera(float left, float right, float bottom, float top, float near = -1.0f, float far = 1.0f);
         void RecalculateViewMatrix() override;
     };
 
