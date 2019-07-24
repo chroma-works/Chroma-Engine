@@ -67,13 +67,18 @@ namespace Chroma
     class CameraManager
     {
     public:
+        static CameraManager* GetInstance();
+
         void RegisterCamera(std::string id, Camera* camera) { m_cameras[id] = camera; }
         void SetCamera(std::string id, bool active);
 
         //void Update(float dt) { currentCamera.Update(dt); }
-    private: 
-        std::map<std::string, Camera*> m_cameras;
+    private:
+        CameraManager();
         std::vector<Camera*> m_active_cameras;
+        std::map<std::string, Camera*> m_cameras;
+
+        static CameraManager* s_instance;
     };
 
 }

@@ -37,6 +37,21 @@ namespace Chroma
         m_view_projection_matrix = m_projection_matrix * m_view_matrix;
     }
 
+    CameraManager* CameraManager::s_instance = 0;
+
+    CameraManager::CameraManager()
+    {}
+
+    CameraManager* CameraManager::GetInstance()
+    {
+        if (s_instance == 0)
+        {
+            s_instance = new CameraManager();
+        }
+
+        return s_instance;
+    }
+
     void CameraManager::SetCamera(std::string id, bool active)
     {
         Camera* selected_cam;

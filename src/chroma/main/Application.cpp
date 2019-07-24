@@ -132,10 +132,14 @@ namespace Chroma
         glm::mat4* view = new glm::mat4(1.0f);
         glm::mat4* proj = new glm::mat4(1.0f);
 
-        PerspectiveCamera cam(1.0f * m_window->GetWidth(), 1.0f * m_window->GetHeight(), 0.1f, 100.0f);
+        CameraManager* cam_mngr = CameraManager::GetInstance();
+        PerspectiveCamera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(), 1.0f * m_window->GetHeight(), 0.1f, 100.0f);
         //OrthographicCamera cam2(-0.8f, 0.8f, -0.9, 0.9, -10, 10);
-        cam.SetPosition({ 0.0f, 0.0f, 3.0f });
+        cam->SetPosition({ 0.0f, 0.0f, 3.0f });
         //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
+
+        cam_mngr->RegisterCamera("perspective-cam", cam);
+        cam_mngr->SetCamera("perspective-cam", true);
         
         //glm::vec4* light_pos = new glm::vec4(0.0f, 3.0f, 0.0f, 1.0f);
 
@@ -146,10 +150,12 @@ namespace Chroma
 
         while (m_running)
         {
+
+            CH_TRACE(cam_mngr->m_active_cameras[0]->GetPosition().z);
             *model = glm::rotate(*model, 0.03f, glm::vec3(0.0f, 1.0f, 0.3f));
 
-            *proj = cam.GetProjectionMatrix();
-            *view = cam.GetViewMatrix();
+            *proj = cam->GetProjectionMatrix();
+            *view = cam->GetViewMatrix();
 
             m_window->OnUpdate();
             shader->UpdateUniforms();
