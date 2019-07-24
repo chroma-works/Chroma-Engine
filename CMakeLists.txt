@@ -94,6 +94,7 @@ set(renderer_sources
     src/chroma/renderer/Shader.cpp
     src/chroma/renderer/Buffer.h
     src/chroma/renderer/Camera.h
+    src/chroma/renderer/Camera.cpp
 )
 
 source_group ("renderer\\" FILES
