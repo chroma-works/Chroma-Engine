@@ -119,7 +119,6 @@ namespace Chroma
         OpenGLVertexArrayObject vao;
         vao.AddVertexBuffer(vertex_buffer);
         vao.AddVertexBuffer(color_buffer);
-
         vao.SetIndexBuffer(index_buffer);
 
         vertex_buffer->Unbind();//To prove VAO works
@@ -130,22 +129,26 @@ namespace Chroma
 
         glm::mat4* model = new glm::mat4(1.0);
         *model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
-        glm::mat4* view = new glm::mat4(glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 4.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
-        glm::mat4* proj = new glm::mat4(glm::perspective(glm::radians(45.0f), 1.0f * m_window->GetWidth() / m_window->GetHeight(), -0.1f, 10.0f));
+        glm::mat4* view = new glm::mat4(1.0f);
+        glm::mat4* proj = new glm::mat4(1.0f);
+
+        PerspectiveCamera cam(1.0f * m_window->GetWidth(), 1.0f * m_window->GetHeight(), 0.1f, 100.0f);
+        //OrthographicCamera cam(-1.6, 1.6, -0.9, 0.9 , -10, 10);
+        cam.SetPosition({ 0.5f, 0.0f, 3.0f });
         
-        glm::vec4* light_pos = new glm::vec4(0.0f, 3.0f, 0.0f, 1.0f);
+        //glm::vec4* light_pos = new glm::vec4(0.0f, 3.0f, 0.0f, 1.0f);
 
 
         shader->CreateUniform("u_Model", ShaderDataType::Mat4, model);
         shader->CreateUniform("u_View", ShaderDataType::Mat4, view);
         shader->CreateUniform("u_Proj", ShaderDataType::Mat4, proj);
         //shader->CreateUniform("u_LightPosition", ShaderDataType::Float4, light_pos);
-        shader->UpdateUniforms();
 
         while (m_running)
         {
-            *proj = glm::perspective(glm::radians(45.0f), 1.0f * m_window->GetWidth() / m_window->GetHeight(), 0.1f, 10.0f);
             *model = glm::rotate(*model, 0.03f, glm::vec3(0.0f, 1.0f, 0.3f));
+            *proj = cam.GetProjectionMatrix();
+            *view = cam.GetViewMatrix();
 
             shader->UpdateUniforms();
             m_window->OnUpdate();
@@ -187,5 +190,4 @@ namespace Chroma
 
         return true;
     }
-
 }
