@@ -137,9 +137,6 @@ namespace Chroma
         //OrthographicCamera cam2(-0.8f, 0.8f, -0.9, 0.9, -10, 10);
         cam->SetPosition({ 0.0f, 0.0f, 3.0f });
         //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
-
-        cam_mngr->RegisterCamera("perspective-cam", cam);
-        cam_mngr->SetCamera("perspective-cam", true);
         
         //glm::vec4* light_pos = new glm::vec4(0.0f, 3.0f, 0.0f, 1.0f);
 
