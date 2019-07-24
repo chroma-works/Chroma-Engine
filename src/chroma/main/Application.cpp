@@ -133,11 +133,11 @@ namespace Chroma
         glm::mat4* proj = new glm::mat4(1.0f);
 
         PerspectiveCamera cam(1.0f * m_window->GetWidth(), 1.0f * m_window->GetHeight(), 0.1f, 100.0f);
-        //OrthographicCamera cam(-1.6, 1.6, -0.9, 0.9 , -10, 10);
-        cam.SetPosition({ 0.5f, 0.0f, 3.0f });
+        //OrthographicCamera cam2(-0.8f, 0.8f, -0.9, 0.9, -10, 10);
+        cam.SetPosition({ 0.0f, 0.0f, 3.0f });
+        //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
         
         //glm::vec4* light_pos = new glm::vec4(0.0f, 3.0f, 0.0f, 1.0f);
-
 
         shader->CreateUniform("u_Model", ShaderDataType::Mat4, model);
         shader->CreateUniform("u_View", ShaderDataType::Mat4, view);
@@ -147,18 +147,18 @@ namespace Chroma
         while (m_running)
         {
             *model = glm::rotate(*model, 0.03f, glm::vec3(0.0f, 1.0f, 0.3f));
+
             *proj = cam.GetProjectionMatrix();
             *view = cam.GetViewMatrix();
 
-            shader->UpdateUniforms();
             m_window->OnUpdate();
-
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            shader->UpdateUniforms();
 
             //vertexarrayobject is bounded and it keeps all the attribute information
             vao.Bind();
-            shader->Bind();
-
+            shader->Bind();   
+            
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glDrawElements(GL_TRIANGLES, index_buffer->GetSize(), GL_UNSIGNED_INT, NULL);
         }
 
