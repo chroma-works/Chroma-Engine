@@ -150,8 +150,6 @@ namespace Chroma
 
         while (m_running)
         {
-
-            CH_TRACE(cam_mngr->m_active_cameras[0]->GetPosition().z);
             *model = glm::rotate(*model, 0.03f, glm::vec3(0.0f, 1.0f, 0.3f));
 
             *proj = cam->GetProjectionMatrix();
