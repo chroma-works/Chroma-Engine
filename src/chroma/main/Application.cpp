@@ -5,17 +5,21 @@
 #include "Application.h"
 
 #include <chroma/main/Log.h>
-#include <chroma/renderer/Shader.h>
 #include <chroma/openGL/OpenGLBuffer.h>
 #include <chroma/openGL/OpenGLVertexArrayObject.h>
+#include <chroma/renderer/Shader.h>
+#include <chroma/renderer/Camera.h>
 
 #include <fstream>
 #include <thirdparty/glm/glm/glm.hpp>
 #include <thirdparty/glm//glm/gtc/matrix_transform.hpp>
+#include <thirdparty/tinyobjloader/tiny_obj_loader.h>
+
 
 
 namespace Chroma
 {
+
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
     Application* Application::s_instance = nullptr;
