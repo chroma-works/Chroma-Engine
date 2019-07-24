@@ -1,7 +1,15 @@
 #pragma once
 
 //from:https://github.com/TheCherno/Hazel/blob/master/Hazel/src/Hazel/Renderer/OrthographicCamera.h
+
+#include <chroma/main/Log.h>
+
+#include <map>
+#include <stdio.h>
+#include <string>
 #include <thirdparty/glm/glm/glm.hpp>
+#include <thirdparty/glm//glm/gtc/matrix_transform.hpp>
+#include <vector>
 
 namespace Chroma
 {
@@ -37,14 +45,14 @@ namespace Chroma
     class OrthographicCamera : public Camera
     {
     public:
-        OrthographicCamera(float left, float right, float bottom, float top, float near = -1.0f, float far = 1.0f);
+        OrthographicCamera(float left, float right, float bottom, float top, float near_clip = -1.0f, float far_clip = 1.0f);
         void RecalculateViewMatrix() override;
     };
 
     class PerspectiveCamera : public Camera
     {
     public:
-        PerspectiveCamera(float width, float height, float near, float far, float fov = 45.0f);
+        PerspectiveCamera(float width, float height, float near_clip, float far_clip, float fov = 45.0f);
 
         float GetFOV() { return m_fov; }
         void SetFOV(float fov) { m_fov = fov; }
@@ -54,6 +62,18 @@ namespace Chroma
     private:
         float m_fov;
 
+    };
+
+    class CameraManager
+    {
+    public:
+        void RegisterCamera(std::string id, Camera* camera) { m_cameras[id] = camera; }
+        void SetCamera(std::string id, bool active);
+
+        //void Update(float dt) { currentCamera.Update(dt); }
+    private: 
+        std::map<std::string, Camera*> m_cameras;
+        std::vector<Camera*> m_active_cameras;
     };
 
 }
