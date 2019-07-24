@@ -4,7 +4,8 @@ A Render Engine
 Hebele hübele
 
 ## Some visuals from chroma
-![Rotating Cube](resources/images/cube.gif)
+![Rotating Cube](resources/images/cube.gif)  
+![Multiple Cameras](resources/images/multi-cam.gif)  
 
 ## Build Instructions (for Windows)
 Download [CMake](https://cmake.org/download/) if you dont have it already.  
