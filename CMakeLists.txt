@@ -34,10 +34,6 @@ add_subdirectory(src/thirdparty/glfw-3.3)
 add_subdirectory(src/thirdparty/spdlog-1.3.1)
 
 set (thirdparty_sources
-    #src/thirdparty/gl3w/include/GL/gl3w.h
-    #src/thirdparty/gl3w/include/GL/glcorearb.h
-    #src/thirdparty/gl3w/include/KHR/khrplatform.h
-    #src/thirdparty/gl3w/src/gl3w.c
     src/thirdparty/glad/include/glad/glad.h
     src/thirdparty/glad/include/KHR/khrplatform.h
     src/thirdparty/glad/src/glad.c
@@ -68,7 +64,7 @@ source_group ("opengl\\" FILES
     ${opengl_sources}
 )
 
-set ( event_sources
+set (event_sources
     src/chroma/events/Event.h
     src/chroma/events/KeyEvent.h
     src/chroma/events/ApplicationEvent.h
@@ -101,6 +97,15 @@ source_group ("renderer\\" FILES
     ${renderer_sources}
 )
 
+set(geometry_sources
+    src/chroma/geometry/Mesh.h
+    src/chroma/geometry/Mesh.cpp
+)
+
+source_group ("geometry\\" FILES
+    ${geometry_sources}
+)
+
 add_executable (chroma
     ${main_sources}
     ${opengl_sources}
@@ -108,6 +113,7 @@ add_executable (chroma
     ${window_sources}
     ${thirdparty_sources}
     ${event_sources}
+    ${geometry_sources}
 )
 
 # Find and link to OpenGL
