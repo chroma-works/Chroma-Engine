@@ -53,7 +53,7 @@ namespace Chroma
     {
     public:
         OpenGLIndexBuffer();
-        OpenGLIndexBuffer(const void* vertices, unsigned int size);
+        OpenGLIndexBuffer(const unsigned int* indices, unsigned int size);
         ~OpenGLIndexBuffer();
 
         void Bind() const override;

@@ -18,6 +18,8 @@ set (main_sources
      src/chroma/main/Log.cpp
      src/chroma/main/Application.h
      src/chroma/main/Application.cpp
+     src/chroma/main/AssetImporter.cpp
+     src/chroma/main/AssetImporter.h
 )
 
 source_group ("main\\" FILES
@@ -34,10 +36,6 @@ add_subdirectory(src/thirdparty/glfw-3.3)
 add_subdirectory(src/thirdparty/spdlog-1.3.1)
 
 set (thirdparty_sources
-    #src/thirdparty/gl3w/include/GL/gl3w.h
-    #src/thirdparty/gl3w/include/GL/glcorearb.h
-    #src/thirdparty/gl3w/include/KHR/khrplatform.h
-    #src/thirdparty/gl3w/src/gl3w.c
     src/thirdparty/glad/include/glad/glad.h
     src/thirdparty/glad/include/KHR/khrplatform.h
     src/thirdparty/glad/src/glad.c
@@ -48,6 +46,8 @@ set (thirdparty_sources
     src/thirdparty/imgui/imgui_draw.cpp
     src/thirdparty/imgui/imgui_internal.h
     src/thirdparty/imgui/imgui_widgets.cpp
+    src/thirdparty/tinyobjloader/tiny_obj_loader.h
+    src/thirdparty/OBJ_loader/OBJ_Loader.h
 )
 
 source_group ("thirdparty\\" FILES
@@ -67,7 +67,7 @@ source_group ("opengl\\" FILES
     ${opengl_sources}
 )
 
-set ( event_sources
+set (event_sources
     src/chroma/events/Event.h
     src/chroma/events/KeyEvent.h
     src/chroma/events/ApplicationEvent.h
@@ -92,10 +92,21 @@ set(renderer_sources
     src/chroma/renderer/Shader.h
     src/chroma/renderer/Shader.cpp
     src/chroma/renderer/Buffer.h
+    src/chroma/renderer/Camera.h
+    src/chroma/renderer/Camera.cpp
 )
 
 source_group ("renderer\\" FILES
     ${renderer_sources}
+)
+
+set(geometry_sources
+    src/chroma/geometry/Mesh.h
+    src/chroma/geometry/Mesh.cpp
+)
+
+source_group ("geometry\\" FILES
+    ${geometry_sources}
 )
 
 add_executable (chroma
@@ -105,6 +116,7 @@ add_executable (chroma
     ${window_sources}
     ${thirdparty_sources}
     ${event_sources}
+    ${geometry_sources}
 )
 
 # Find and link to OpenGL
