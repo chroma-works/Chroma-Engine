@@ -22,5 +22,5 @@ void main(){
 
 	gl_Position = u_MVP * vec4(in_Position.xyz, 1.0f) ;
 	//fragTexCoord = in_TexCoord;
-	frag_Color = vec3(0.0f, 0.0f, 1.0f);
+	frag_Color = vec3(1.0f, 1.0f, 1.0f);
 }
