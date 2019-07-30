@@ -7,6 +7,6 @@ in vec3 frag_Pos;
 
 out vec3 color;
 void main(){
-	//color = frag_Color;
-	color = frag_Pos;
+	color = frag_Color;
+	//color = frag_Pos;
 }

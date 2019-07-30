@@ -116,7 +116,7 @@ namespace Chroma
         Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/vs.shader", "../assets/shaders/fs.shader");
 
         //Model import test
-        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/monkey.obj");
+        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/teapot.obj");
 
         //Vertex positions buffer
         OpenGLVertexBuffer* vertex_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_positions.data(), 
@@ -153,14 +153,14 @@ namespace Chroma
         glEnable(GL_DEPTH_TEST);//TODO: Create an wrapper to encapsulate RenderCommand ??
 
         glm::mat4* model = new glm::mat4(1.0);
-        *model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 1.0f));
+        *model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 140.0f));
         glm::mat4* view = new glm::mat4(1.0f);
         glm::mat4* proj = new glm::mat4(1.0f);
 
         CameraManager* cam_mngr = CameraManager::GetInstance();
-        PerspectiveCamera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(), 1.0f * m_window->GetHeight(), 0.1f, 100.0f);
+        PerspectiveCamera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(), 1.0f * m_window->GetHeight(), 0.1f, 300.0f);
         //OrthographicCamera cam2(-0.8f, 0.8f, -0.9, 0.9, -10, 10);
-        cam->SetPosition({ 0.0f, 0.0f, -2.0f });
+        cam->SetPosition({ 0.0f, 200.0f, -2.0f });
         //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
         
         //glm::vec4* light_pos = new glm::vec4(0.0f, 3.0f, 0.0f, 1.0f);
@@ -169,15 +169,15 @@ namespace Chroma
         shader->CreateUniform("u_View", ShaderDataType::Mat4, view);
         shader->CreateUniform("u_Proj", ShaderDataType::Mat4, proj);
         //shader->CreateUniform("u_LightPosition", ShaderDataType::Float4, light_pos);
-        glm::vec4 dir({ 0.0f, 0.0f, 1.0f, 0.0f });
+        glm::vec4 dir({ 0.0f, 0.0f, 170.0f, 0.0f });
         float a = 0.04f;
 
         while (m_running)
         {
             *model = glm::rotate(*model, 0.03f, glm::vec3(0.0f, 1.0f, 0.3f));
 
-            dir = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
-            //cam->SetDirection(dir);
+            //dir = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
+            cam->SetDirection(dir);
             //a += 0.01;
 
             *proj = cam->GetProjectionMatrix();
