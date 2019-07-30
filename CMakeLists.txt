@@ -18,8 +18,8 @@ set (main_sources
      src/chroma/main/Log.cpp
      src/chroma/main/Application.h
      src/chroma/main/Application.cpp
-     src/chroma/main/AssetImporter.h
      src/chroma/main/AssetImporter.cpp
+     src/chroma/main/AssetImporter.h
 )
 
 source_group ("main\\" FILES
@@ -47,6 +47,7 @@ set (thirdparty_sources
     src/thirdparty/imgui/imgui_internal.h
     src/thirdparty/imgui/imgui_widgets.cpp
     src/thirdparty/tinyobjloader/tiny_obj_loader.h
+    src/thirdparty/OBJ_loader/OBJ_Loader.h
 )
 
 source_group ("thirdparty\\" FILES
