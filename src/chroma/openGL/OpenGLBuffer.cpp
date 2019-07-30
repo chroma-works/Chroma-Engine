@@ -57,12 +57,12 @@ namespace Chroma
         glGenBuffers(1, &m_renderer_id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_renderer_id);
     }
-    OpenGLIndexBuffer::OpenGLIndexBuffer(const void* indices, unsigned int size)
+    OpenGLIndexBuffer::OpenGLIndexBuffer(const unsigned int* indices, unsigned int size)
     {
         m_size = size;
         glGenBuffers(1, &m_renderer_id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_renderer_id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size * sizeof(unsigned int), indices, GL_STATIC_DRAW);
     }
     OpenGLIndexBuffer::~OpenGLIndexBuffer()
     {
@@ -78,7 +78,7 @@ namespace Chroma
     }
     void OpenGLIndexBuffer::SetBufferStorage(const void* data, unsigned int size)
     {
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
     }
     void OpenGLIndexBuffer::SetBufferSubData(const void * data, long long int offset, unsigned int size)
     {
