@@ -850,6 +850,7 @@ namespace objl
 			// best they get for not compiling a mesh with normals	
 			if (noNormal)
 			{
+                CH_INFO("Model has no normals. Generating...");
 				Vector3 A = oVerts[0].Position - oVerts[1].Position;
 				Vector3 B = oVerts[2].Position - oVerts[1].Position;
 

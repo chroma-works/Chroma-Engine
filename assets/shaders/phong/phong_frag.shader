@@ -38,11 +38,6 @@ void main(){
         specular = pow(specAngle, u_Material.shininess);
     }
 
-	// Because the eye point the is at the orgin
-	// the vector from the vertex position to the eye is
-
-	vec3 E = normalize(frag_Pos);
-
     float fatt = 1.0 / (1.0 + 0.1 * lDistance + 0.01 * lDistance * lDistance);
 	vec4 fColor;
     float Ka = u_Material.ambient.w;
@@ -53,7 +48,7 @@ void main(){
             fatt * (Kd * lambertian * u_Material.diffuse.xyz +
                     Ks * specular * u_Material.specular.xyz), 1.0f);
 	vec4 gamma = vec4(1.0 / 1.5);
-	fColor = pow(fColor, gamma);
+	//fColor = pow(fColor, gamma);
 	fColor.a = 1.0;
 	color = fColor * texture(u_Texture, frag_TexCoord);
 }
