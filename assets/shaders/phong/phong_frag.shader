@@ -52,7 +52,7 @@ void main(){
 	fColor = vec4(Ka * u_Material.ambient.xyz +
             fatt * (Kd * lambertian * u_Material.diffuse.xyz +
                     Ks * specular * u_Material.specular.xyz), 1.0f);
-	vec4 gamma = vec4(1.0 / 2.1);
+	vec4 gamma = vec4(1.0 / 1.5);
 	fColor = pow(fColor, gamma);
 	fColor.a = 1.0;
 	color = fColor * texture(u_Texture, frag_TexCoord);
