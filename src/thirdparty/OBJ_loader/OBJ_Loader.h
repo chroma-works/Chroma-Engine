@@ -764,7 +764,7 @@ namespace objl
 			algorithm::split(algorithm::tail(icurline), sface, " ");
 
 			bool noNormal = false;
-
+            static bool flag = true;
 			// For every given vertex do this
 			for (int i = 0; i < int(sface.size()); i++)
 			{
@@ -850,7 +850,11 @@ namespace objl
 			// best they get for not compiling a mesh with normals	
 			if (noNormal)
 			{
-                CH_INFO("Model has no normals. Generating...");
+                if (flag)
+                {
+                    CH_INFO("Model has no normals. Generating...");
+                    flag = false;
+                }
 				Vector3 A = oVerts[0].Position - oVerts[1].Position;
 				Vector3 B = oVerts[2].Position - oVerts[1].Position;
 

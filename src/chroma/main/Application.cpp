@@ -117,8 +117,8 @@ namespace Chroma
         Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/phong/phong_vert.shader", "../assets/shaders/phong/phong_frag.shader");
 
         //Model import test
-        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/rabbit.obj");
-        Texture* texture = new Texture("../assets/textures/stone.jpg");
+        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/teapot.obj");
+        Texture* texture = new Texture("../assets/textures/tarmac.jpg");
 
         //Vertex positions buffer
         OpenGLVertexBuffer* vertex_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_positions.data(), 
@@ -166,7 +166,7 @@ namespace Chroma
 
         glm::mat4* model = new glm::mat4(1.0);
         *model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0f));
-        *model = glm::rotate(*model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //*model = glm::rotate(*model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         glm::mat4* view = new glm::mat4(1.0f);
         glm::mat4* proj = new glm::mat4(1.0f);
         glm::mat4* normal_mat = new glm::mat4(1.0f);
@@ -174,10 +174,10 @@ namespace Chroma
         CameraManager* cam_mngr = CameraManager::GetInstance();
         PerspectiveCamera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(), 1.0f * m_window->GetHeight(), 0.1f, 300.0f);
         //OrthographicCamera cam2(-0.8f, 0.8f, -0.9, 0.9, -10, 10);
-        cam->SetPosition({ 0.0f, 40.0f, 40.0f });
+        cam->SetPosition({ 0.0f, 110.0f, 140.0f });
         //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
         
-        glm::vec4* light_pos = new glm::vec4(0.0f, 10.0f, -10.0f, 1.0f);
+        glm::vec4* light_pos = new glm::vec4(0.0f, 0.0f, -100.0f, 1.0f);
 
         shader->CreateUniform("u_Model", ShaderDataType::Mat4, model);
         shader->CreateUniform("u_View", ShaderDataType::Mat4, view);
@@ -185,7 +185,7 @@ namespace Chroma
         shader->CreateUniform("u_NormalMat", ShaderDataType::Mat4, normal_mat);
         shader->CreateUniform("u_LightPosition", ShaderDataType::Float4, light_pos);
         shader->CreateUniform(Material("u_Material",
-            { 1.00f, 0.60f, 0.2f, .6f }, { 0.0f, 0.4f, .4f, 5.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, 60.0f));
+            { 1.00f, 1.0f, 1.0f, .6f }, { 0.0f, 0.4f, .4f, 5.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, 60.0f));
         glm::vec4 dir({ 0.0f, 15.0f, 1.0f, 1.0f });
 
         float a = 0.04f;
@@ -194,7 +194,7 @@ namespace Chroma
         {
             //*model = glm::rotate(*model, 0.03f, glm::vec3(0.0f, 1.0f, 0.3f));
             //dir = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
-            *light_pos = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * *light_pos;
+            //*light_pos = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * *light_pos;
             cam->SetPosition(glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(cam->GetPosition(), 1.0f));
             cam->SetDirection(dir);
             //a -= 0.1;
