@@ -4,10 +4,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <thirdparty/stb_image/stb_image.h>
 
-Texture::Texture(const std::string & path, const std::string& uni_name)
-    : m_rendererID(0), m_filepath(path), m_localbuffer(nullptr), m_width(0), m_heigth(0), m_BPP(0), m_uniform_name(uni_name)
+Texture::Texture(const std::string & path)
+    : m_rendererID(0), m_filepath(path), m_localbuffer(nullptr), m_width(0), m_heigth(0), m_BPP(0)
 {
-    stbi_set_flip_vertically_on_load(1);
+    stbi_set_flip_vertically_on_load(false);
     m_localbuffer = stbi_load(path.c_str(), &m_width, &m_heigth, &m_BPP, 4);
 
     glGenTextures(1, &m_rendererID);
@@ -35,10 +35,10 @@ Texture& Texture::operator=(Texture rhs)
         m_heigth = rhs.m_heigth;
         //m_localbuffer = nullptr;
         m_rendererID = rhs.m_rendererID;
-        m_uniform_name = rhs.m_uniform_name;
+        //m_uniform_name = rhs.m_uniform_name;
         m_width = rhs.m_width;
 
-        stbi_set_flip_vertically_on_load(1);
+        stbi_set_flip_vertically_on_load(false);
         m_localbuffer = stbi_load(m_filepath.c_str(), &m_width, &m_heigth, &m_BPP, 4);
 
         glGenTextures(1, &m_rendererID);
@@ -66,10 +66,10 @@ Texture::Texture(const Texture & other)
     //m_localbuffer(other.m_localbuffer),
     m_width(other.m_width),
     m_heigth(other.m_heigth),
-    m_BPP(other.m_BPP),
-    m_uniform_name(other.m_uniform_name)
+    m_BPP(other.m_BPP)/*,
+    m_uniform_name(other.m_uniform_name)*/
 {
-    stbi_set_flip_vertically_on_load(1);
+    stbi_set_flip_vertically_on_load(false);
     m_localbuffer = stbi_load(m_filepath.c_str(), &m_width, &m_heigth, &m_BPP, 4);
 
     glGenTextures(1, &m_rendererID);

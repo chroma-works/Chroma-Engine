@@ -8,8 +8,9 @@
 #include <chroma/main/Log.h>
 #include <chroma/openGL/OpenGLBuffer.h>
 #include <chroma/openGL/OpenGLVertexArrayObject.h>
-#include <chroma/renderer/Shader.h>
 #include <chroma/renderer/Camera.h>
+#include <chroma/renderer/Texture.h>
+#include <chroma/renderer/Shader.h>
 
 #include <fstream>
 #include <string>
@@ -117,6 +118,7 @@ namespace Chroma
 
         //Model import test
         Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/teapot.obj");
+        Texture* texture = new Texture("../assets/textures/alpi.jpg");
 
         //Vertex positions buffer
         OpenGLVertexBuffer* vertex_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_positions.data(), 
@@ -127,7 +129,7 @@ namespace Chroma
         vertex_buffer_layout.PushAttribute(layout_attribute);
         vertex_buffer->SetBufferLayout(vertex_buffer_layout);
 
-        //Vertex colors buffer
+        //Vertex normals buffer
         OpenGLVertexBuffer* normal_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_normals.data(),
             mesh->m_vertex_normals.size() * sizeof(GLfloat) * 3);
 
@@ -135,6 +137,15 @@ namespace Chroma
         VertexBufferLayout vertex_buffer_layout2;
         vertex_buffer_layout2.PushAttribute(layout_attribute2);
         normal_buffer->SetBufferLayout(vertex_buffer_layout2);
+
+        //Vertex colors buffer
+        OpenGLVertexBuffer* tex_coord_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_texcoords.data(),
+            mesh->m_vertex_texcoords.size() * sizeof(GLfloat) * 2);
+
+        VertexAttribute layout_attribute3("in_TexCoord", 2, ShaderDataType::Float2, GL_FALSE);
+        VertexBufferLayout vertex_buffer_layout3;
+        vertex_buffer_layout3.PushAttribute(layout_attribute3);
+        tex_coord_buffer->SetBufferLayout(vertex_buffer_layout3);
 
         //index buffer
         OpenGLIndexBuffer* index_buffer = new OpenGLIndexBuffer(mesh->m_indices.data(),mesh->m_indices.size());
@@ -144,6 +155,7 @@ namespace Chroma
         OpenGLVertexArrayObject vao;
         vao.AddVertexBuffer(vertex_buffer);
         vao.AddVertexBuffer(normal_buffer);
+        vao.AddVertexBuffer(tex_coord_buffer);
         vao.SetIndexBuffer(index_buffer);
 
         vertex_buffer->Unbind();//To prove VAO works
@@ -188,7 +200,8 @@ namespace Chroma
 
             //vertexarrayobject is bounded and it keeps all the attribute information
             vao.Bind();
-            shader->Bind();   
+            shader->Bind();
+            texture->Bind();
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glDrawElements(GL_TRIANGLES, index_buffer->GetSize(), GL_UNSIGNED_INT, NULL);
