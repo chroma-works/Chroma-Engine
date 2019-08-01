@@ -118,7 +118,7 @@ namespace Chroma
 
         //Model import test
         Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/knot.obj");
-        Texture* texture = new Texture("../assets/textures/brick.jpg");
+        Texture* texture = new Texture("../assets/textures/stone.jpg");
 
         //Vertex positions buffer
         OpenGLVertexBuffer* vertex_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_positions.data(), 
@@ -176,7 +176,7 @@ namespace Chroma
         cam->SetPosition({ 0.0f, 20.0f, 40.0f });
         //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
         
-        glm::vec4* light_pos = new glm::vec4(0.0f, 20.0f, 0.0f, 1.0f);
+        glm::vec4* light_pos = new glm::vec4(0.0f, 10.0f, -25.0f, 1.0f);
 
         shader->CreateUniform("u_Model", ShaderDataType::Mat4, model);
         shader->CreateUniform("u_View", ShaderDataType::Mat4, view);
@@ -184,7 +184,7 @@ namespace Chroma
         shader->CreateUniform("u_NormalMat", ShaderDataType::Mat4, normal_mat);
         shader->CreateUniform("u_LightPosition", ShaderDataType::Float4, light_pos);
         shader->CreateUniform(Material("u_Material",
-            { 0.10f, 0.10f, 0.10f, 0.1f }, { 1.0f, 0.84f, 0.8f, 1.0f }, { 1.0f, 1.0f, 1.0f, 2.0f }, 20.0f));
+            { 0.60f, 0.60f, 0.6f, 0.2f }, { 1.0f, 0.84f, 0.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, 50.0f));
         glm::vec4 dir({ 0.0f, 0.0f, 1.0f, 1.0f });
 
         float a = 0.04f;
