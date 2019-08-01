@@ -6,7 +6,10 @@ Hebele hübele
 ## Some visuals from chroma
 ![Rotating Cube](resources/images/cube.gif)  
 ![Multiple Cameras](resources/images/multi-cam.gif)  
-![obj Loader](resources/images/load.gif) 
+![obj Loader](resources/images/load.gif)  
+![textures](resources/images/texture.gif)  
+![phong shading](resources/images/phong.gif)  
+<img src= "resources/images/phong.PNG" height="270" width="480"> 
 
 ## Build Instructions (for Windows)
 Download [CMake](https://cmake.org/download/) if you dont have it already.  
