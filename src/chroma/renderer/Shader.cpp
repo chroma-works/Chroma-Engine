@@ -86,6 +86,23 @@ namespace Chroma
         AddUniform(uniform);
     }
 
+    void Shader::CreateUniform(Material mat)
+    {
+        Uniform ambient(mat.shader_var_name + ".ambient", ShaderDataType::Float4);
+        ambient.data = &mat.ambient;
+        Uniform diffuse(mat.shader_var_name + ".diffuse", ShaderDataType::Float4);
+        diffuse.data = &mat.diffuse;
+        Uniform specular(mat.shader_var_name + ".specular", ShaderDataType::Float4);
+        specular.data = &mat.specular;
+        Uniform shininess(mat.shader_var_name + ".shininess", ShaderDataType::Float);
+        shininess.data = &mat.shininess;
+
+        AddUniform(ambient);
+        AddUniform(diffuse);
+        AddUniform(specular);
+        AddUniform(shininess);
+    }
+
     void Shader::UpdateUniforms()
     {
         Bind();

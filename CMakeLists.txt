@@ -48,6 +48,7 @@ set (thirdparty_sources
     src/thirdparty/imgui/imgui_widgets.cpp
     src/thirdparty/tinyobjloader/tiny_obj_loader.h
     src/thirdparty/OBJ_loader/OBJ_Loader.h
+    src/thirdparty/stb_image/stb_image.h
 )
 
 source_group ("thirdparty\\" FILES
@@ -94,6 +95,8 @@ set(renderer_sources
     src/chroma/renderer/Buffer.h
     src/chroma/renderer/Camera.h
     src/chroma/renderer/Camera.cpp
+    src/chroma/renderer/Texture.h
+    src/chroma/renderer/Texture.cpp
 )
 
 source_group ("renderer\\" FILES

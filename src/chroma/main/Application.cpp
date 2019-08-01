@@ -8,8 +8,9 @@
 #include <chroma/main/Log.h>
 #include <chroma/openGL/OpenGLBuffer.h>
 #include <chroma/openGL/OpenGLVertexArrayObject.h>
-#include <chroma/renderer/Shader.h>
 #include <chroma/renderer/Camera.h>
+#include <chroma/renderer/Texture.h>
+#include <chroma/renderer/Shader.h>
 
 #include <fstream>
 #include <string>
@@ -113,10 +114,11 @@ namespace Chroma
         };*/
 
         // Create and compile our GLSL program from the shaders
-        Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/vs.shader", "../assets/shaders/fs.shader");
+        Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/phong/phong_vert.shader", "../assets/shaders/phong/phong_frag.shader");
 
         //Model import test
-        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/teapot.obj");
+        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/knot.obj");
+        Texture* texture = new Texture("../assets/textures/brick.jpg");
 
         //Vertex positions buffer
         OpenGLVertexBuffer* vertex_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_positions.data(), 
@@ -127,7 +129,7 @@ namespace Chroma
         vertex_buffer_layout.PushAttribute(layout_attribute);
         vertex_buffer->SetBufferLayout(vertex_buffer_layout);
 
-        //Vertex colors buffer
+        //Vertex normals buffer
         OpenGLVertexBuffer* normal_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_normals.data(),
             mesh->m_vertex_normals.size() * sizeof(GLfloat) * 3);
 
@@ -135,6 +137,15 @@ namespace Chroma
         VertexBufferLayout vertex_buffer_layout2;
         vertex_buffer_layout2.PushAttribute(layout_attribute2);
         normal_buffer->SetBufferLayout(vertex_buffer_layout2);
+
+        //Vertex colors buffer
+        OpenGLVertexBuffer* tex_coord_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_texcoords.data(),
+            mesh->m_vertex_texcoords.size() * sizeof(GLfloat) * 2);
+
+        VertexAttribute layout_attribute3("in_TexCoord", 2, ShaderDataType::Float2, GL_FALSE);
+        VertexBufferLayout vertex_buffer_layout3;
+        vertex_buffer_layout3.PushAttribute(layout_attribute3);
+        tex_coord_buffer->SetBufferLayout(vertex_buffer_layout3);
 
         //index buffer
         OpenGLIndexBuffer* index_buffer = new OpenGLIndexBuffer(mesh->m_indices.data(),mesh->m_indices.size());
@@ -144,6 +155,7 @@ namespace Chroma
         OpenGLVertexArrayObject vao;
         vao.AddVertexBuffer(vertex_buffer);
         vao.AddVertexBuffer(normal_buffer);
+        vao.AddVertexBuffer(tex_coord_buffer);
         vao.SetIndexBuffer(index_buffer);
 
         vertex_buffer->Unbind();//To prove VAO works
@@ -153,42 +165,49 @@ namespace Chroma
         glEnable(GL_DEPTH_TEST);//TODO: Create an wrapper to encapsulate RenderCommand ??
 
         glm::mat4* model = new glm::mat4(1.0);
-        *model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 140.0f));
+        *model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0f));
         glm::mat4* view = new glm::mat4(1.0f);
         glm::mat4* proj = new glm::mat4(1.0f);
+        glm::mat4* normal_mat = new glm::mat4(1.0f);
 
         CameraManager* cam_mngr = CameraManager::GetInstance();
         PerspectiveCamera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(), 1.0f * m_window->GetHeight(), 0.1f, 300.0f);
         //OrthographicCamera cam2(-0.8f, 0.8f, -0.9, 0.9, -10, 10);
-        cam->SetPosition({ 0.0f, 200.0f, -2.0f });
+        cam->SetPosition({ 0.0f, 20.0f, 40.0f });
         //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
         
-        //glm::vec4* light_pos = new glm::vec4(0.0f, 3.0f, 0.0f, 1.0f);
+        glm::vec4* light_pos = new glm::vec4(0.0f, 20.0f, 0.0f, 1.0f);
 
         shader->CreateUniform("u_Model", ShaderDataType::Mat4, model);
         shader->CreateUniform("u_View", ShaderDataType::Mat4, view);
         shader->CreateUniform("u_Proj", ShaderDataType::Mat4, proj);
-        //shader->CreateUniform("u_LightPosition", ShaderDataType::Float4, light_pos);
-        glm::vec4 dir({ 0.0f, 0.0f, 170.0f, 0.0f });
+        shader->CreateUniform("u_NormalMat", ShaderDataType::Mat4, normal_mat);
+        shader->CreateUniform("u_LightPosition", ShaderDataType::Float4, light_pos);
+        shader->CreateUniform(Material("u_Material",
+            { 0.10f, 0.10f, 0.10f, 0.1f }, { 1.0f, 0.84f, 0.8f, 1.0f }, { 1.0f, 1.0f, 1.0f, 2.0f }, 20.0f));
+        glm::vec4 dir({ 0.0f, 0.0f, 1.0f, 1.0f });
+
         float a = 0.04f;
 
         while (m_running)
         {
             *model = glm::rotate(*model, 0.03f, glm::vec3(0.0f, 1.0f, 0.3f));
-
             //dir = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
+            //*light_pos = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * *light_pos;
             cam->SetDirection(dir);
-            //a += 0.01;
+            //a -= 0.1;
 
             *proj = cam->GetProjectionMatrix();
             *view = cam->GetViewMatrix();
+            *normal_mat = (glm::transpose(glm::inverse(*view * *model)));
 
             m_window->OnUpdate();
             shader->UpdateUniforms();
 
             //vertexarrayobject is bounded and it keeps all the attribute information
             vao.Bind();
-            shader->Bind();   
+            shader->Bind();
+            texture->Bind();
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glDrawElements(GL_TRIANGLES, index_buffer->GetSize(), GL_UNSIGNED_INT, NULL);

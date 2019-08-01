@@ -8,6 +8,18 @@
 
 namespace Chroma
 {
+    struct Material
+    {
+        std::string shader_var_name;
+        glm::vec4 ambient;
+        glm::vec4 diffuse;
+        glm::vec4 specular;
+        float shininess;
+
+        Material(std::string name, glm::vec4 ambi, glm::vec4 diff, glm::vec4 spec, float shin)
+            :shader_var_name(name), ambient(ambi), diffuse(diff), specular(spec), shininess(shin) {}
+    };
+
     class Shader
     {
     public:
@@ -27,6 +39,7 @@ namespace Chroma
         void Bind() const;
         void Unbind() const;
         void CreateUniform(std::string name, ShaderDataType type, void* data);
+        void CreateUniform(Material mat);
         void UpdateUniforms();
 
     private:

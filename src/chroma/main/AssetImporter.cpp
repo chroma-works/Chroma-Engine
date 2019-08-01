@@ -35,4 +35,9 @@ namespace Chroma
 
         return mesh;
     }
+
+    Texture* AssetImporter::LoadTexture(const std::string& file_name)
+    {
+        return new Texture(file_name);
+    }
 }
