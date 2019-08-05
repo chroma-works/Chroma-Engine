@@ -97,6 +97,7 @@ set(renderer_sources
     src/chroma/renderer/Camera.cpp
     src/chroma/renderer/Texture.h
     src/chroma/renderer/Texture.cpp
+    src/chroma/renderer/Light.h
 )
 
 source_group ("renderer\\" FILES
