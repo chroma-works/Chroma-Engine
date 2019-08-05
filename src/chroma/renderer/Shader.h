@@ -42,6 +42,8 @@ namespace Chroma
         void CreateUniform(std::string name, ShaderDataType type, void* data);
         void CreateUniform(Material* mat);
         void AddLight(DirectionalLight * lig);
+		void AddLight(PointLight * lig);
+		void AddLight(SpotLight * lig);
         void UpdateUniforms();
 
     private:
