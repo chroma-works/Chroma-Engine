@@ -858,7 +858,7 @@ namespace objl
 				Vector3 A = oVerts[0].Position - oVerts[1].Position;
 				Vector3 B = oVerts[2].Position - oVerts[1].Position;
 
-				Vector3 normal = math::CrossV3(B, A);
+				Vector3 normal = math::CrossV3(B, A);//TODO::@Kaan bunlarý smooth shading için düzelt
 
 				for (int i = 0; i < int(oVerts.size()); i++)
 				{
