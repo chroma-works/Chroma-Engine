@@ -86,21 +86,36 @@ namespace Chroma
         AddUniform(uniform);
     }
 
-    void Shader::CreateUniform(Material mat)
+    void Shader::CreateUniform(Material* mat)
     {
-        Uniform ambient(mat.shader_var_name + ".ambient", ShaderDataType::Float4);
-        ambient.data = &mat.ambient;
-        Uniform diffuse(mat.shader_var_name + ".diffuse", ShaderDataType::Float4);
-        diffuse.data = &mat.diffuse;
-        Uniform specular(mat.shader_var_name + ".specular", ShaderDataType::Float4);
-        specular.data = &mat.specular;
-        Uniform shininess(mat.shader_var_name + ".shininess", ShaderDataType::Float);
-        shininess.data = &mat.shininess;
+        Uniform ambient(mat->shader_var_name + ".ambient", ShaderDataType::Float4);
+        ambient.data = mat->ambient;
+        Uniform diffuse(mat->shader_var_name + ".diffuse", ShaderDataType::Float4);
+        diffuse.data = mat->diffuse;
+        Uniform specular(mat->shader_var_name + ".specular", ShaderDataType::Float4);
+        specular.data = mat->specular;
+        Uniform shininess(mat->shader_var_name + ".shininess", ShaderDataType::Float);
+        shininess.data = &mat->shininess; //TODO SHININESS ÇALIÞMIYOSA BURDA SORUN VAR!!!
 
         AddUniform(ambient);
         AddUniform(diffuse);
         AddUniform(specular);
         AddUniform(shininess);
+    }
+
+    void Shader::AddLight(DirectionalLight* lig)
+    {
+        //if(m_dir_lights < MAX_NUM_LIGHTS)
+        Uniform direction(lig->shader_var_name + "[" + std::to_string(m_dir_lights.size()) + "].direction", ShaderDataType::Float3);
+        direction.data = lig->direction;
+
+        AddUniform(direction);
+
+        //Herþey bitince
+        m_dir_lights.push_back(lig);
+        //UPDATE NUM OF LIGTHS
+        int location = glGetUniformLocation(m_renderer_id, "u_NumDirLights");
+        glUniform1i(location, m_dir_lights.size());
     }
 
     void Shader::UpdateUniforms()
