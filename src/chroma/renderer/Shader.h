@@ -12,12 +12,12 @@ namespace Chroma
     struct Material
     {
         std::string shader_var_name;
-        glm::vec4* ambient;
-        glm::vec4* diffuse;
-        glm::vec4* specular;
+        glm::vec3* ambient;
+        glm::vec3* diffuse;
+        glm::vec3* specular;
         float shininess;
 
-        Material(std::string name, glm::vec4* ambi, glm::vec4* diff, glm::vec4* spec, float shin)
+        Material(std::string name, glm::vec3* ambi, glm::vec3* diff, glm::vec3* spec, float shin)
             :shader_var_name(name), ambient(ambi), diffuse(diff), specular(spec), shininess(shin) {}
     };
 

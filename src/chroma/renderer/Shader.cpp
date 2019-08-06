@@ -90,11 +90,11 @@ namespace Chroma
 
     void Shader::CreateUniform(Material* mat)
     {
-        Uniform ambient(mat->shader_var_name + ".ambient", ShaderDataType::Float4);
+        Uniform ambient(mat->shader_var_name + ".ambient", ShaderDataType::Float3);
         ambient.data = mat->ambient;
-        Uniform diffuse(mat->shader_var_name + ".diffuse", ShaderDataType::Float4);
+        Uniform diffuse(mat->shader_var_name + ".diffuse", ShaderDataType::Float3);
         diffuse.data = mat->diffuse;
-        Uniform specular(mat->shader_var_name + ".specular", ShaderDataType::Float4);
+        Uniform specular(mat->shader_var_name + ".specular", ShaderDataType::Float3);
         specular.data = mat->specular;
         Uniform shininess(mat->shader_var_name + ".shininess", ShaderDataType::Float);
         shininess.data = &mat->shininess; //TODO SHININESS ÇALIÞMIYOSA BURDA SORUN VAR!!!
@@ -141,19 +141,19 @@ namespace Chroma
 			AddUniform(position);
 
 			Uniform constant(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].constant", ShaderDataType::Float);
-			*(float *)&constant.data = lig->constant; //i hate you so fucking much
+			constant.data = (void*)&lig->constant; //i hate you so fucking much
 			AddUniform(constant);
 
 			Uniform linear(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].linear", ShaderDataType::Float);
-			*(float *)&linear.data = lig->linear;
+			linear.data = (void*)&lig->linear;
 			AddUniform(linear);
 
 			Uniform quadratic(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].quadratic", ShaderDataType::Float);
-			*(float *)&quadratic.data = lig->quadratic;
+			quadratic.data = (void*)&lig->quadratic;
 			AddUniform(quadratic);
 
 			Uniform ambient(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].ambient", ShaderDataType::Float3);
-			ambient.data = lig->ambient;
+			ambient.data = (void*)&lig->ambient;
 			AddUniform(ambient);
 
 			Uniform diffuse(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].diffuse", ShaderDataType::Float3);
@@ -183,23 +183,23 @@ namespace Chroma
 			AddUniform(direction);
 
 			Uniform cutOff(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].cutOff", ShaderDataType::Float);
-			*(float *)&cutOff.data = lig->cutOff;
+			cutOff.data = (void*)&lig->cutOff;
 			AddUniform(cutOff);
 
 			Uniform outerCutOff(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].outerCutOff", ShaderDataType::Float);
-			*(float *)&outerCutOff.data = lig->outerCutOff;
+			outerCutOff.data = (void*)&lig->outerCutOff;
 			AddUniform(outerCutOff);
 
 			Uniform constant(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].constant", ShaderDataType::Float);
-			*(float *)&constant.data = lig->constant;
+			constant.data = (void*)&lig->constant;
 			AddUniform(constant);
 
 			Uniform linear(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].linear", ShaderDataType::Float);
-			*(float *)&linear.data = lig->linear;
+			linear.data = (void*)&lig->linear;
 			AddUniform(linear);
 
 			Uniform quadratic(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].quadratic", ShaderDataType::Float);
-			*(float *)&quadratic.data = lig->quadratic;
+			quadratic.data = (void*)&lig->quadratic;
 			AddUniform(quadratic);
 
 			Uniform ambient(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].ambient", ShaderDataType::Float3);
