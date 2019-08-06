@@ -57,7 +57,6 @@ uniform int u_NumPointLights;
 uniform int u_NumSpotLights;
 
 uniform Material u_Material;
-uniform vec4 u_LightPosition;
 uniform sampler2D u_Texture;
 uniform vec3 u_CameraPos;
 
@@ -73,10 +72,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main(){
-
 	// Transform vertex normal into eye coordinates
 	vec3 N = normalize(frag_Normal);
-    vec3 L = normalize(vec3(u_LightPosition) - frag_Pos);
+    //vec3 L = normalize(vec3(u_LightPosition) - frag_Pos);
     vec3 V = normalize(u_CameraPos - frag_Pos); 
 
     vec3 result = vec3(0.0f, 0.0f, 0.0f);
@@ -92,7 +90,6 @@ void main(){
     {
         result += CalcSpotLight(u_SpotLights[i], N, frag_Pos, V);
     }
-
 	vec4 gamma = vec4(1.0 / 1.5);
 	//fColor = pow(fColor, gamma);
 	//fColor.a = 1.0;
