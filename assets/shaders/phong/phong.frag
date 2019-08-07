@@ -108,9 +108,9 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     if (diff > 0.0)
         spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.shininess);
     // combine results
-	return vec3(u_Material.ambient.xyz +
-                (diff * u_Material.diffuse.xyz +
-                  spec * u_Material.specular.xyz));
+	return vec3(u_Material.ambient.xyz * light.ambient +
+                (light.diffuse * diff * u_Material.diffuse.xyz +
+                  light.specular * spec * u_Material.specular.xyz));
 }
 
 // calculates the color when using a point light.

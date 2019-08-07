@@ -128,8 +128,10 @@ namespace Chroma
 		}
         m_dir_lights.push_back(lig);
         //update # of lights
-        int location = glGetUniformLocation(m_renderer_id, "u_NumDirLights");
-        glUniform1i(location, m_dir_lights.size());
+        Bind();
+        int location = glGetUniformLocation(m_renderer_id, "u_NumDirLights");//TODO: make the name not hardcoded
+        glUniform1i(location, (int)m_dir_lights.size());
+        Unbind();
     }
 
 	void Shader::AddLight(PointLight* lig)
@@ -163,11 +165,41 @@ namespace Chroma
 			Uniform specular(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].specular", ShaderDataType::Float3);
 			specular.data = lig->specular;
 			AddUniform(specular);
+
+            /*Uniform position(lig->shader_var_name +".position", ShaderDataType::Float3);
+            position.data = lig->position;
+            AddUniform(position);
+
+            Uniform constant(lig->shader_var_name +".constant", ShaderDataType::Float);
+            constant.data = (void*)&lig->constant; //i hate you so fucking much
+            AddUniform(constant);
+
+            Uniform linear(lig->shader_var_name +".linear", ShaderDataType::Float);
+            linear.data = (void*)&lig->linear;
+            AddUniform(linear);
+
+            Uniform quadratic(lig->shader_var_name +".quadratic", ShaderDataType::Float);
+            quadratic.data = (void*)&lig->quadratic;
+            AddUniform(quadratic);
+
+            Uniform ambient(lig->shader_var_name +".ambient", ShaderDataType::Float3);
+            ambient.data = (void*)&lig->ambient;
+            AddUniform(ambient);
+
+            Uniform diffuse(lig->shader_var_name +".diffuse", ShaderDataType::Float3);
+            diffuse.data = lig->diffuse;
+            AddUniform(diffuse);
+
+            Uniform specular(lig->shader_var_name +".specular", ShaderDataType::Float3);
+            specular.data = lig->specular;
+            AddUniform(specular);*/
 		}
 		m_point_lights.push_back(lig);
 		//update # of lights
-		int location = glGetUniformLocation(m_renderer_id, "u_NumPointLights");
-		glUniform1i(location, m_point_lights.size());
+        Bind();
+		int location = glGetUniformLocation(m_renderer_id, "u_NumPointLights");//TODO: make the name not hardcoded
+		glUniform1i(location, (int)m_point_lights.size());
+        Unbind();
 	}
 
 	void Shader::AddLight(SpotLight* lig)
@@ -216,8 +248,10 @@ namespace Chroma
 		}
 		m_spot_lights.push_back(lig);
 		//update # of lights
-		int location = glGetUniformLocation(m_renderer_id, "u_NumSpotLights");
+        Bind();
+		int location = glGetUniformLocation(m_renderer_id, "u_NumSpotLights");//TODO: make the name not hardcoded
 		glUniform1i(location, m_spot_lights.size());
+        Unbind();
 	}
 
     void Shader::UpdateUniforms()

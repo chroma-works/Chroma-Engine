@@ -57,9 +57,9 @@ namespace Chroma
         glm::vec3* specular;
 
         SpotLight(glm::vec3* pos, glm::vec3* dir, glm::vec3* amb,
-            glm::vec3* diff, glm::vec3* spec, float cons = 1.0f, float lin = 0.01f, float quad = 0.0001f, 
+            glm::vec3* diff, glm::vec3* spec, float cons = 1.0f, float lin = 0.03f, float quad = 0.0009f, 
 			float cut = 12.5f, float outerCut = 15.0f, std::string name = "u_SpotLights")
-            : position(pos), ambient(amb), diffuse(diff), specular(spec), constant(cons), linear(lin), quadratic(quad), 
+            : position(pos), direction(dir), ambient(amb), diffuse(diff), specular(spec), constant(cons), linear(lin), quadratic(quad), 
 			cutOff(cut), outerCutOff(outerCut), shader_var_name(name)
         {}
     };
