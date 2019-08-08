@@ -111,16 +111,18 @@ namespace Chroma
         cam->SetPosition({ 0.0f, 0.0f, 40.0f });
         //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
         
-        glm::vec3* light_pos = new glm::vec3(-10.0f, 0.0f, 11.0f);
-        PointLight* pl = new PointLight(light_pos, new glm::vec3(0.3f, 0.5f, 0.0f), new glm::vec3(0.3f, 0.5f, 0.0f), new glm::vec3(1.0f, 1.0f, 1.0f));
+        glm::vec3* light_pos = new glm::vec3(0.0f, 0.0f, 40.0f);
+        PointLight* pl = new PointLight(*light_pos, glm::vec3(0.1f, 0.1f, 0.1f),
+            glm::vec3(0.5f, 0.3f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
-        glm::vec3* light_dir = new glm::vec3(20.0f, 0.0f, 0.0f);
-        DirectionalLight* dl = new DirectionalLight(light_dir, new glm::vec3(0.0f, 0.5f, 0.3f), new glm::vec3(0.0f, 1.0f, 0.0f), new glm::vec3(1.0f, 1.0f, 1.0f));
+        glm::vec3* light_dir = new glm::vec3(-30.0f, 0.0f, -40.0f);
+        DirectionalLight* dl = new DirectionalLight(*light_dir, glm::vec3(0.1f, 0.1f, 0.1f),
+            glm::vec3(0.5f, 0.3f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
-        glm::vec3* light_pos2 = new glm::vec3(-10.0f, 0.0f, 11.0f);
-        glm::vec3* light_dir2 = new glm::vec3(15.0f, 0.0f, -11.0f);
-        SpotLight* sl = new SpotLight(light_pos2, light_dir2, new glm::vec3(0.0f, 0.5f, 0.3f), 
-            new glm::vec3(0.0f, 0.3f, 0.5f), new glm::vec3(1.0f, 1.0f, 1.0f));
+        glm::vec3* light_pos2 = new glm::vec3(0.0f, 0.0f, 40.0f);
+        glm::vec3* light_dir2 = new glm::vec3(0.0f, 0.0f, -11.0f);
+        SpotLight* sl = new SpotLight(*light_pos2, *light_dir2, glm::vec3(0.1f, 0.1f, 0.1f), 
+            glm::vec3(0.5f, 0.3f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
         glm::vec3* cam_pos = new glm::vec3(cam->GetPosition());
 
@@ -128,9 +130,9 @@ namespace Chroma
         shader->CreateUniform("u_View", ShaderDataType::Mat4, view);
         shader->CreateUniform("u_Proj", ShaderDataType::Mat4, proj);
         shader->CreateUniform("u_NormalMat", ShaderDataType::Mat4, normal_mat);
-        shader->AddLight(pl);
+        //shader->AddLight(pl);
         //shader->AddLight(dl);
-        //shader->AddLight(sl);
+        shader->AddLight(sl);
         shader->CreateUniform(new Material("u_Material",
             new glm::vec3({1.00f, 1.0f, 1.0f }), new glm::vec3({ 0.5f, 0.5f, .5f }), new glm::vec3({ 1.0f, 1.0f, 1.0f }), 60.0f));
         glm::vec4 dir({ 0.0f, 0.0f, 0.0f, 1.0f });
@@ -143,8 +145,8 @@ namespace Chroma
             //*model = glm::rotate(*model, 0.039f, glm::vec3(0.0f, 1.0f, 0.0f));
             //dir = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
             //*light_pos = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(*light_pos, 1.0f);
-            cam->SetPosition(glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(cam->GetPosition(), 1.0f));
-            cam->SetDirection(dir);
+            /*cam->SetPosition(glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(cam->GetPosition(), 1.0f));
+            cam->SetDirection(dir);*/
             *cam_pos = cam->GetPosition();
 
             *proj = cam->GetProjectionMatrix();
