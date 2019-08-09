@@ -98,6 +98,8 @@ set(renderer_sources
     src/chroma/renderer/Texture.h
     src/chroma/renderer/Texture.cpp
     src/chroma/renderer/Light.h
+    src/chroma/renderer/SceneObject.h
+    src/chroma/renderer/SceneObject.cpp
 )
 
 source_group ("renderer\\" FILES
