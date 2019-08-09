@@ -50,7 +50,7 @@ namespace Chroma
 
         //Model import test
         Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/box.obj");
-        Texture* texture = new Texture("../assets/textures/tarmac.jpg");
+        Texture* texture = new Texture("../assets/textures/crate.jpg");
 
         //Vertex positions buffer
         OpenGLVertexBuffer* vertex_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_positions.data(), 
@@ -131,8 +131,8 @@ namespace Chroma
         shader->CreateUniform("u_Proj", ShaderDataType::Mat4, proj);
         shader->CreateUniform("u_NormalMat", ShaderDataType::Mat4, normal_mat);
         //shader->AddLight(pl);
-        //shader->AddLight(dl);
-        shader->AddLight(sl);
+        shader->AddLight(dl);
+        //shader->AddLight(sl);
         shader->CreateUniform(new Material("u_Material",
             new glm::vec3({1.00f, 1.0f, 1.0f }), new glm::vec3({ 0.5f, 0.5f, .5f }), new glm::vec3({ 1.0f, 1.0f, 1.0f }), 60.0f));
         glm::vec4 dir({ 0.0f, 0.0f, 0.0f, 1.0f });
