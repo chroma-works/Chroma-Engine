@@ -91,13 +91,13 @@ namespace Chroma
     void Shader::CreateUniform(Material* mat)
     {
         Uniform ambient(mat->shader_var_name + ".ambient", ShaderDataType::Float3);
-        ambient.data = mat->ambient;
+        ambient.data = (void*)&mat->ambient;
         Uniform diffuse(mat->shader_var_name + ".diffuse", ShaderDataType::Float3);
-        diffuse.data = mat->diffuse;
+        diffuse.data = (void*)&mat->diffuse;
         Uniform specular(mat->shader_var_name + ".specular", ShaderDataType::Float3);
-        specular.data = mat->specular;
+        specular.data = (void*)&mat->specular;
         Uniform shininess(mat->shader_var_name + ".shininess", ShaderDataType::Float);
-        shininess.data = &mat->shininess; //TODO SHININESS ÇALIÞMIYOSA BURDA SORUN VAR!!!
+        shininess.data = (void*)&mat->shininess; //TODO SHININESS ÇALIÞMIYOSA BURDA SORUN VAR!!!
 
         AddUniform(ambient);
         AddUniform(diffuse);
