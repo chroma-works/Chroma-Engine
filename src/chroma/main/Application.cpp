@@ -10,14 +10,13 @@
 #include <chroma/openGL/OpenGLVertexArrayObject.h>
 #include <chroma/renderer/Camera.h>
 #include <chroma/renderer/Texture.h>
+#include <chroma/renderer/SceneObject.h>
 #include <chroma/renderer/Shader.h>
 
 #include <fstream>
 #include <string>
 #include <thirdparty/glm/glm/glm.hpp>
 #include <thirdparty/glm//glm/gtc/matrix_transform.hpp>
-
-
 
 namespace Chroma
 {
@@ -48,9 +47,14 @@ namespace Chroma
         // Create and compile our GLSL program from the shaders
         Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/phong/phong.vert", "../assets/shaders/phong/phong.frag");
 
-        //Model import test
-        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/box.obj");
+        //Model import
+        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/rabbit.obj");
         Texture* texture = new Texture("../assets/textures/crate.jpg");
+        Material* mat = new Material("u_Material",
+            glm::vec3({ 0.0f, 0.5f, 0.8f }), glm::vec3({ 0.0f, 0.5f, 0.8f }), glm::vec3({ 0.8f, 0.8f, 0.8f }), 90.0f);
+        SceneObject scnobj = SceneObject(*mesh, "rabbit");
+        scnobj.SetTexture(*texture);
+        scnobj.SetMaterial(*mat);
 
         //Vertex positions buffer
         OpenGLVertexBuffer* vertex_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_positions.data(), 
@@ -113,16 +117,16 @@ namespace Chroma
         
         glm::vec3* light_pos = new glm::vec3(0.0f, 0.0f, 40.0f);
         PointLight* pl = new PointLight(*light_pos, glm::vec3(0.1f, 0.1f, 0.1f),
-            glm::vec3(0.5f, 0.3f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+            glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
 
         glm::vec3* light_dir = new glm::vec3(-30.0f, 0.0f, -40.0f);
         DirectionalLight* dl = new DirectionalLight(*light_dir, glm::vec3(0.1f, 0.1f, 0.1f),
-            glm::vec3(0.5f, 0.3f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+            glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
 
         glm::vec3* light_pos2 = new glm::vec3(0.0f, 0.0f, 40.0f);
         glm::vec3* light_dir2 = new glm::vec3(0.0f, 0.0f, -11.0f);
-        SpotLight* sl = new SpotLight(*light_pos2, *light_dir2, glm::vec3(0.1f, 0.1f, 0.1f), 
-            glm::vec3(0.5f, 0.3f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+        SpotLight* sl = new SpotLight(*light_pos2, *light_dir2, glm::vec3(0.1f, 0.1f, 0.1f),
+            glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
 
         glm::vec3* cam_pos = new glm::vec3(cam->GetPosition());
 
@@ -133,25 +137,29 @@ namespace Chroma
         //shader->AddLight(pl);
         shader->AddLight(dl);
         //shader->AddLight(sl);
-        shader->CreateUniform(new Material("u_Material",
-            new glm::vec3({1.00f, 1.0f, 1.0f }), new glm::vec3({ 0.5f, 0.5f, .5f }), new glm::vec3({ 1.0f, 1.0f, 1.0f }), 60.0f));
-        glm::vec4 dir({ 0.0f, 0.0f, 0.0f, 1.0f });
+        shader->CreateUniform(&scnobj.GetMaterial());
         shader->CreateUniform("u_CameraPos", ShaderDataType::Float3, cam_pos);
+        glm::vec4 dir({ 0.0f, 0.0f, 0.0f, 1.0f });
+
+        scnobj.SetScale({ .7f, .7f, .7f });
+        scnobj.SetPosition({ 0.0f, -9.0f, 0.0f });
+        scnobj.SetRotation(glm::quat({ glm::radians(-90.0f), glm::radians(0.0f), glm::radians(0.0f) }));
 
         float a = 0.04f;
 
         while (m_running)
         {
-            //*model = glm::rotate(*model, 0.039f, glm::vec3(0.0f, 1.0f, 0.0f));
+            scnobj.RotateAngleAxis(glm::radians(2.0f), glm::vec3(0.0, 1.0, 0.0));
+            *model = scnobj.GetModelMatrix();
             //dir = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
             //*light_pos = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(*light_pos, 1.0f);
             /*cam->SetPosition(glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(cam->GetPosition(), 1.0f));
             cam->SetDirection(dir);*/
             *cam_pos = cam->GetPosition();
-
+            //a += .01f;
             *proj = cam->GetProjectionMatrix();
             *view = cam->GetViewMatrix();
-            *normal_mat = (glm::transpose(glm::inverse( *model)));
+            *normal_mat = (glm::transpose(glm::inverse(*model)));
 
             m_window->OnUpdate();
             shader->UpdateUniforms();
