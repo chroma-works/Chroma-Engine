@@ -8,6 +8,7 @@ class Texture
 public:
     enum TextureWrap{ EDGE_CLAMP = GL_CLAMP_TO_EDGE, MIRRORED_REPEAT = GL_MIRRORED_REPEAT, REPEAT = GL_REPEAT};
 
+    Texture();
     Texture(const std::string& path, TextureWrap wrap = EDGE_CLAMP);
     Texture(const Texture& other);
     Texture &operator=(Texture rhs);

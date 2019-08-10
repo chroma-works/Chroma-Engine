@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string>
 #include <chroma/renderer/Buffer.h>
+#include <chroma/renderer/Light.h>
 #include <thirdparty/glm/glm/glm.hpp>
 
 namespace Chroma
@@ -11,12 +12,12 @@ namespace Chroma
     struct Material
     {
         std::string shader_var_name;
-        glm::vec4 ambient;
-        glm::vec4 diffuse;
-        glm::vec4 specular;
+        glm::vec3 ambient;
+        glm::vec3 diffuse;
+        glm::vec3 specular;
         float shininess;
 
-        Material(std::string name, glm::vec4 ambi, glm::vec4 diff, glm::vec4 spec, float shin)
+        Material(std::string name, glm::vec3 ambi, glm::vec3 diff, glm::vec3 spec, float shin)
             :shader_var_name(name), ambient(ambi), diffuse(diff), specular(spec), shininess(shin) {}
     };
 
@@ -39,7 +40,10 @@ namespace Chroma
         void Bind() const;
         void Unbind() const;
         void CreateUniform(std::string name, ShaderDataType type, void* data);
-        void CreateUniform(Material mat);
+        void CreateUniform(Material* mat);
+        void AddLight(DirectionalLight * lig);
+		void AddLight(PointLight * lig);
+		void AddLight(SpotLight * lig);
         void UpdateUniforms();
 
     private:
@@ -63,5 +67,8 @@ namespace Chroma
 
         uint32_t m_renderer_id;
         std::vector<Uniform> m_uniforms;
+        std::vector<DirectionalLight*> m_dir_lights;
+        std::vector<PointLight*> m_point_lights;
+        std::vector<SpotLight*> m_spot_lights;
     };
 }

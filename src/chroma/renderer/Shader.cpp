@@ -6,6 +6,8 @@
 #include <fstream>
 #include <thirdparty/glm/glm/glm.hpp>
 
+#define MAX_NUM_LIGHTS 15
+
 namespace Chroma
 {
     Shader::Shader(const std::string& vertex_shader_data, const std::string& fragment_shader_data, bool read_from_file)
@@ -86,22 +88,148 @@ namespace Chroma
         AddUniform(uniform);
     }
 
-    void Shader::CreateUniform(Material mat)
+    void Shader::CreateUniform(Material* mat)
     {
-        Uniform ambient(mat.shader_var_name + ".ambient", ShaderDataType::Float4);
-        ambient.data = &mat.ambient;
-        Uniform diffuse(mat.shader_var_name + ".diffuse", ShaderDataType::Float4);
-        diffuse.data = &mat.diffuse;
-        Uniform specular(mat.shader_var_name + ".specular", ShaderDataType::Float4);
-        specular.data = &mat.specular;
-        Uniform shininess(mat.shader_var_name + ".shininess", ShaderDataType::Float);
-        shininess.data = &mat.shininess;
+        Uniform ambient(mat->shader_var_name + ".ambient", ShaderDataType::Float3);
+        ambient.data = (void*)&mat->ambient;
+        Uniform diffuse(mat->shader_var_name + ".diffuse", ShaderDataType::Float3);
+        diffuse.data = (void*)&mat->diffuse;
+        Uniform specular(mat->shader_var_name + ".specular", ShaderDataType::Float3);
+        specular.data = (void*)&mat->specular;
+        Uniform shininess(mat->shader_var_name + ".shininess", ShaderDataType::Float);
+        shininess.data = (void*)&mat->shininess; //TODO SHININESS ÇALIÞMIYOSA BURDA SORUN VAR!!!
 
         AddUniform(ambient);
         AddUniform(diffuse);
         AddUniform(specular);
         AddUniform(shininess);
     }
+
+    void Shader::AddLight(DirectionalLight* lig)
+    {
+		if (m_dir_lights.size() < MAX_NUM_LIGHTS)
+		{
+			Uniform direction(lig->shader_var_name + "[" + std::to_string(m_dir_lights.size()) + "].direction", ShaderDataType::Float3);
+			direction.data = (void*)&lig->direction;
+			AddUniform(direction);
+
+			Uniform ambient(lig->shader_var_name + "[" + std::to_string(m_dir_lights.size()) + "].ambient", ShaderDataType::Float3);
+			ambient.data = (void*)&lig->ambient;
+			AddUniform(ambient);
+
+			Uniform diffuse(lig->shader_var_name + "[" + std::to_string(m_dir_lights.size()) + "].diffuse", ShaderDataType::Float3);
+			diffuse.data = (void*)&lig->diffuse;
+			AddUniform(diffuse);
+
+			Uniform specular(lig->shader_var_name + "[" + std::to_string(m_dir_lights.size()) + "].specular", ShaderDataType::Float3);
+			specular.data = (void*)&lig->specular;
+			AddUniform(specular);
+            m_dir_lights.push_back(lig);
+            //update # of lights
+            Bind();
+            int location = glGetUniformLocation(m_renderer_id, "u_NumDirLights");//TODO: make the name not hardcoded
+            glUniform1i(location, (int)m_dir_lights.size());
+            Unbind();
+        }
+        else
+            CH_WARN("Adding ligth failed:\n\t Maximum number of DirectionalLights(" + std::to_string(MAX_NUM_LIGHTS) + ") has been reached");
+    }
+
+	void Shader::AddLight(PointLight* lig)
+	{
+        if (m_point_lights.size() < MAX_NUM_LIGHTS)
+        {
+            Uniform position(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].position", ShaderDataType::Float3);
+            position.data = (void*)&lig->position;
+            AddUniform(position);
+
+            Uniform constant(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].constant", ShaderDataType::Float);
+            constant.data = (void*)&lig->constant; //i hate you so fucking much
+            AddUniform(constant);
+
+            Uniform linear(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].linear", ShaderDataType::Float);
+            linear.data = (void*)&lig->linear;
+            AddUniform(linear);
+
+            Uniform quadratic(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].quadratic", ShaderDataType::Float);
+            quadratic.data = (void*)&lig->quadratic;
+            AddUniform(quadratic);
+
+            Uniform ambient(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].ambient", ShaderDataType::Float3);
+            ambient.data = (void*)&lig->ambient;
+            AddUniform(ambient);
+
+            Uniform diffuse(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].diffuse", ShaderDataType::Float3);
+            diffuse.data = (void*)&lig->diffuse;
+            AddUniform(diffuse);
+
+            Uniform specular(lig->shader_var_name + "[" + std::to_string(m_point_lights.size()) + "].specular", ShaderDataType::Float3);
+            specular.data = (void*)&lig->specular;
+            AddUniform(specular);
+            m_point_lights.push_back(lig);
+            //update # of lights
+            Bind();
+            int location = glGetUniformLocation(m_renderer_id, "u_NumPointLights");//TODO: make the name not hardcoded
+            glUniform1i(location, (int)m_point_lights.size());
+            Unbind();
+        }
+        else
+            CH_WARN("Adding ligth failed:\n\t Maximum number of PointLights(" + std::to_string(MAX_NUM_LIGHTS) + ") has been reached");
+	}
+
+	void Shader::AddLight(SpotLight* lig)
+	{
+        if (m_spot_lights.size() < MAX_NUM_LIGHTS)
+        {
+            Uniform position(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].position", ShaderDataType::Float3);
+            position.data = (void*)&lig->position;
+            AddUniform(position);
+
+            Uniform direction(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].direction", ShaderDataType::Float3);
+            direction.data = (void*)&lig->direction;
+            AddUniform(direction);
+
+            Uniform cutOff(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].cutOff", ShaderDataType::Float);
+            cutOff.data = (void*)&lig->cutOff;
+            AddUniform(cutOff);
+
+            Uniform outerCutOff(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].outerCutOff", ShaderDataType::Float);
+            outerCutOff.data = (void*)&lig->outerCutOff;
+            AddUniform(outerCutOff);
+
+            Uniform constant(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].constant", ShaderDataType::Float);
+            constant.data = (void*)&lig->constant;
+            AddUniform(constant);
+
+            Uniform linear(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].linear", ShaderDataType::Float);
+            linear.data = (void*)&lig->linear;
+            AddUniform(linear);
+
+            Uniform quadratic(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].quadratic", ShaderDataType::Float);
+            quadratic.data = (void*)&lig->quadratic;
+            AddUniform(quadratic);
+
+            Uniform ambient(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].ambient", ShaderDataType::Float3);
+            ambient.data = (void*)&lig->ambient;
+            AddUniform(ambient);
+
+            Uniform diffuse(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].diffuse", ShaderDataType::Float3);
+            diffuse.data = (void*)&lig->diffuse;
+            AddUniform(diffuse);
+
+            Uniform specular(lig->shader_var_name + "[" + std::to_string(m_spot_lights.size()) + "].specular", ShaderDataType::Float3);
+            specular.data = (void*)&lig->specular;
+            AddUniform(specular);
+            m_spot_lights.push_back(lig);
+            //update # of lights
+            Bind();
+            int location = glGetUniformLocation(m_renderer_id, "u_NumSpotLights");//TODO: make the name not hardcoded
+            glUniform1i(location, m_spot_lights.size());
+            Unbind();
+        }
+        else
+            CH_WARN("Adding ligth failed:\n\t Maximum number of Spotligths(" + std::to_string(MAX_NUM_LIGHTS) + ") has been reached");
+	}
 
     void Shader::UpdateUniforms()
     {
@@ -156,6 +284,7 @@ namespace Chroma
                 CH_ERROR("Unknown type!");
             }
         }
+        Unbind();
     }
 
     unsigned int Shader::CompileShader(unsigned int type, const std::string& source)

@@ -9,7 +9,8 @@ Hebele hübele
 ![obj Loader](resources/images/load.gif)  
 ![textures](resources/images/texture.gif)  
 ![phong shading](resources/images/phong.gif)  
-<img src= "resources/images/phong.PNG" height="270" width="480"> 
+<img src= "resources/images/phong.PNG" height="270" width="480">  
+<img src= "resources/images/dirl.gif" height="155" width="276"> <img src= "resources/images/spotl.gif" height="155" width="276"> <img src= "resources/images/pointl.gif" height="155" width="276"> 
 
 ## Build Instructions (for Windows)
 Download [CMake](https://cmake.org/download/) if you dont have it already.  
