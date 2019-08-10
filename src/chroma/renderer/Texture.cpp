@@ -3,6 +3,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <thirdparty/stb_image/stb_image.h>
 
+Texture::Texture()
+{}
+
 Texture::Texture(const std::string & path, TextureWrap wrap)
     : m_rendererID(0), m_filepath(path), m_localbuffer(nullptr), m_width(0), m_heigth(0), m_BPP(0), m_t_wrap(wrap)
 {
