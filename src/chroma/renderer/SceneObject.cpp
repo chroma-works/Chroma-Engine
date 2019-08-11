@@ -8,6 +8,56 @@ namespace Chroma
         : m_mesh(mesh), m_name(name), m_position(pos), m_rotation(glm::quat(rot)), m_scale(scale)
     {
         m_texture = Texture("../assets/textures/white.jpg");//Set texture to white to avoid all black shaded objects
+
+        //Vertex positions buffer
+        std::shared_ptr<OpenGLVertexBuffer> position_buffer = std::make_shared<OpenGLVertexBuffer>((void*)m_mesh.m_vertex_positions.data(),
+            m_mesh.m_vertex_positions.size() * sizeof(GLfloat) * 3);
+
+        VertexAttribute layout_attribute("in_Position", 0, ShaderDataType::Float3, GL_FALSE);
+        VertexBufferLayout vertex_buffer_layout;
+        vertex_buffer_layout.PushAttribute(layout_attribute);
+        position_buffer->SetBufferLayout(vertex_buffer_layout);
+
+        m_vertex_buffers.push_back(position_buffer);
+
+        //Vertex normals buffer
+        std::shared_ptr<OpenGLVertexBuffer> normal_buffer = std::make_shared<OpenGLVertexBuffer>((void*)m_mesh.m_vertex_normals.data(),
+            m_mesh.m_vertex_normals.size() * sizeof(GLfloat) * 3);
+
+        VertexAttribute layout_attribute2("in_Normal", 1, ShaderDataType::Float3, GL_FALSE);
+        VertexBufferLayout vertex_buffer_layout2;
+        vertex_buffer_layout2.PushAttribute(layout_attribute2);
+        normal_buffer->SetBufferLayout(vertex_buffer_layout2);
+
+        m_vertex_buffers.push_back(normal_buffer);
+
+        //Vertex texture coords buffer
+        std::shared_ptr<OpenGLVertexBuffer> tex_coord_buffer = std::make_shared<OpenGLVertexBuffer>((void*)m_mesh.m_vertex_texcoords.data(),
+            m_mesh.m_vertex_texcoords.size() * sizeof(GLfloat) * 2);
+
+        VertexAttribute layout_attribute3("in_TexCoord", 2, ShaderDataType::Float2, GL_FALSE);
+        VertexBufferLayout vertex_buffer_layout3;
+        vertex_buffer_layout3.PushAttribute(layout_attribute3);
+        tex_coord_buffer->SetBufferLayout(vertex_buffer_layout3);
+
+        m_vertex_buffers.push_back(tex_coord_buffer);
+
+        //index buffer
+        std::shared_ptr<OpenGLIndexBuffer> index_buffer = std::make_shared<OpenGLIndexBuffer>(m_mesh.m_indices.data(), m_mesh.m_indices.size());
+        m_index_buffer = index_buffer;
+
+        //vertex array object
+        m_vao.AddVertexBuffer(position_buffer);
+        m_vao.AddVertexBuffer(normal_buffer);
+        m_vao.AddVertexBuffer(tex_coord_buffer);
+        m_vao.SetIndexBuffer(index_buffer);
+    }
+
+    void SceneObject::Draw(DrawMode mode)
+    {
+        m_texture.Bind();
+        m_vao.Bind();
+        glDrawElements(mode, m_index_buffer->GetSize(), GL_UNSIGNED_INT, NULL);
     }
 
     void SceneObject::RecalculateModelMatrix()
