@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <chroma/main/TimeStep.h>
 #include <unordered_set>
 #include <chroma/events/Event.h>
 
@@ -10,9 +11,7 @@ namespace Chroma
     class Layer
     {
     public:
-        Layer(const std::string& name = "New Layer")
-            : m_layer_name(name) 
-        {}
+        Layer(const std::string& name = "New Layer");
         virtual ~Layer() = default;
 
         inline std::string GetLayerName() { return m_layer_name; }
@@ -21,7 +20,6 @@ namespace Chroma
 
         virtual void OnAttach() {}
         virtual void OnDetach() {}
-        virtual void OnUpdate() {}
         virtual void OnUpdate(Timestep ts) {}
         virtual void OnImGuiRender() {}
         virtual void OnEvent(Event& event) {}
