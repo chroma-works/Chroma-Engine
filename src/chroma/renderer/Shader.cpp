@@ -284,7 +284,7 @@ namespace Chroma
                 CH_ERROR("Unknown type!");
             }
         }
-        Unbind();
+        //Unbind();
     }
 
     unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
