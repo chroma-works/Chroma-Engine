@@ -18,14 +18,13 @@ namespace Chroma
     {
         glBindVertexArray(0);
     }
-    void OpenGLVertexArrayObject::AddVertexBuffer(OpenGLVertexBuffer* vertex_buffer)
+    void OpenGLVertexArrayObject::AddVertexBuffer(std::shared_ptr<OpenGLVertexBuffer> vertex_buffer)
     {
         CH_ASSERT(vertex_buffer->GetBufferLayout().GetElements().size(), "Buffer has no layout!");
 
         Bind();
         vertex_buffer->Bind();
 
-        m_vertex_buffers.push_back(vertex_buffer);
 
         const auto& layout = vertex_buffer->GetBufferLayout().GetElements();
         for (VertexAttribute element : layout)
@@ -39,10 +38,11 @@ namespace Chroma
 
             glEnableVertexAttribArray(element.shader_layout_index);
         }
+        m_vertex_buffers.push_back(vertex_buffer);
         Unbind();
     }
 
-    void OpenGLVertexArrayObject::SetIndexBuffer(OpenGLIndexBuffer* index_buffer)
+    void OpenGLVertexArrayObject::SetIndexBuffer(std::shared_ptr<OpenGLIndexBuffer> index_buffer)
     {
         Bind();
         index_buffer->Bind();
