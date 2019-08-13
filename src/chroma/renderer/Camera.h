@@ -3,6 +3,7 @@
 //from:https://github.com/TheCherno/Hazel/blob/master/Hazel/src/Hazel/Renderer/OrthographicCamera.h
 
 #include <chroma/main/Log.h>
+#include <chroma/renderer/Scene.h>
 
 #include <map>
 #include <stdio.h>
@@ -64,22 +65,22 @@ namespace Chroma
 
     };
 
-    class CameraManager
+    /*class CameraManager //UNUSED 
     {
     public:
         static CameraManager* GetInstance();
 
-        void RegisterCamera(std::string id, Camera* camera) { m_cameras[id] = camera; }
+        void RegisterCamera(std::string id, std::shared_ptr<Camera> camera) { m_cameras[id] = camera; }
         void SetCamera(std::string id, bool active);
 
         //void Update(float dt) { currentCamera.Update(dt); }
     private:
         CameraManager();
-        std::vector<Camera*> m_active_cameras;
-        std::map<std::string, Camera*> m_cameras;
+        std::vector<std::shared_ptr<Camera>> m_active_cameras;
+        std::map<std::string, std::shared_ptr<Camera>> m_cameras;
 
         static CameraManager* s_instance;
-    };
+    };*/
 
 }
 

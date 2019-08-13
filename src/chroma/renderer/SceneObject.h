@@ -17,6 +17,7 @@ namespace Chroma
 {
     enum DrawMode { TRI = GL_TRIANGLES, TRI_STRIP = GL_TRIANGLE_STRIP, 
         TRI_FAN = GL_TRIANGLE_FAN, LIN = GL_LINE, LIN_LOOP = GL_LINE_LOOP, LIN_STRIP = GL_LINE_STRIP };
+
     class SceneObject
     {
     public:

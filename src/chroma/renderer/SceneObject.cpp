@@ -13,7 +13,7 @@ namespace Chroma
         std::shared_ptr<OpenGLVertexBuffer> position_buffer = std::make_shared<OpenGLVertexBuffer>((void*)m_mesh.m_vertex_positions.data(),
             m_mesh.m_vertex_positions.size() * sizeof(GLfloat) * 3);
 
-        VertexAttribute layout_attribute("in_Position", 0, ShaderDataType::Float3, GL_FALSE);
+        VertexAttribute layout_attribute("in_Position", Shader::POS_LAY, ShaderDataType::Float3, GL_FALSE);
         VertexBufferLayout vertex_buffer_layout;
         vertex_buffer_layout.PushAttribute(layout_attribute);
         position_buffer->SetBufferLayout(vertex_buffer_layout);
@@ -24,7 +24,7 @@ namespace Chroma
         std::shared_ptr<OpenGLVertexBuffer> normal_buffer = std::make_shared<OpenGLVertexBuffer>((void*)m_mesh.m_vertex_normals.data(),
             m_mesh.m_vertex_normals.size() * sizeof(GLfloat) * 3);
 
-        VertexAttribute layout_attribute2("in_Normal", 1, ShaderDataType::Float3, GL_FALSE);
+        VertexAttribute layout_attribute2("in_Normal", Shader::NORM_LAY, ShaderDataType::Float3, GL_FALSE);
         VertexBufferLayout vertex_buffer_layout2;
         vertex_buffer_layout2.PushAttribute(layout_attribute2);
         normal_buffer->SetBufferLayout(vertex_buffer_layout2);
@@ -35,7 +35,7 @@ namespace Chroma
         std::shared_ptr<OpenGLVertexBuffer> tex_coord_buffer = std::make_shared<OpenGLVertexBuffer>((void*)m_mesh.m_vertex_texcoords.data(),
             m_mesh.m_vertex_texcoords.size() * sizeof(GLfloat) * 2);
 
-        VertexAttribute layout_attribute3("in_TexCoord", 2, ShaderDataType::Float2, GL_FALSE);
+        VertexAttribute layout_attribute3("in_TexCoord", Shader::TEXC_LAY, ShaderDataType::Float2, GL_FALSE);
         VertexBufferLayout vertex_buffer_layout3;
         vertex_buffer_layout3.PushAttribute(layout_attribute3);
         tex_coord_buffer->SetBufferLayout(vertex_buffer_layout3);

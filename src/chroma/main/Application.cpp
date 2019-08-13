@@ -37,8 +37,7 @@ namespace Chroma
     }
 
     Application::~Application()
-    {
-    }
+    {}
 
     void Chroma::Application::Run()
     {
@@ -48,33 +47,37 @@ namespace Chroma
         Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/phong/phong.vert", "../assets/shaders/phong/phong.frag");
 
         //Model import
-        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/box.obj");
+        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/rabbit.obj");
         Texture* texture = new Texture("../assets/textures/crate.jpg");
         Material* mat = new Material("u_Material",
             glm::vec3({ 0.8f, 0.8f, 0.8f }), glm::vec3({ 0.8f, 0.8f, 0.8f }), glm::vec3({ 0.8f, 0.8f, 0.8f }), 90.0f);
-        SceneObject scnobj = SceneObject(*mesh, "rabbit");
-        scnobj.SetTexture(*texture);
-        scnobj.SetMaterial(*mat);
+        std::shared_ptr<SceneObject> scnobj = std::make_shared<SceneObject>(*mesh, "rabbit");
+        scnobj->SetTexture(*texture);
+        scnobj->SetMaterial(*mat);
+
+        Scene scene("crate scene", shader);
+        scene.AddSceneObject("crate", scnobj);
         
         /*glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);*/
         glEnable(GL_DEPTH_TEST);//TODO: Create an wrapper to encapsulate RenderCommand ??
 
-        glm::mat4* model = new glm::mat4(1.0);
+        /*glm::mat4* model = new glm::mat4(1.0);
         *model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0f));
         //*model = glm::rotate(*model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         glm::mat4* view = new glm::mat4(1.0f);
         glm::mat4* proj = new glm::mat4(1.0f);
-        glm::mat4* normal_mat = new glm::mat4(1.0f);
+        glm::mat4* normal_mat = new glm::mat4(1.0f);*/
 
-        CameraManager* cam_mngr = CameraManager::GetInstance();
-        PerspectiveCamera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(), 
+        //CameraManager* cam_mngr = CameraManager::GetInstance();
+        Camera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(), 
             1.0f * m_window->GetHeight(), 0.1f, 300.0f);
         //OrthographicCamera cam2(-0.8f, 0.8f, -0.9, 0.9, -10, 10);
         cam->SetPosition({ 0.0f, 0.0f, 40.0f });
         //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
-        
-        PointLight* pl = new PointLight(glm::vec3(0.0f, 0.0f, 40.0f), glm::vec3(0.1f, 0.1f, 0.1f),
+        scene.AddCamera("pers-cam", cam);
+
+        std::shared_ptr<PointLight> pl = std::make_shared<PointLight>(glm::vec3(0.0f, 0.0f, 40.0f), glm::vec3(0.1f, 0.1f, 0.1f),
             glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
 
         DirectionalLight* dl = new DirectionalLight(glm::vec3(-30.0f, 0.0f, -40.0f), 
@@ -85,20 +88,21 @@ namespace Chroma
 
         glm::vec3* cam_pos = new glm::vec3(cam->GetPosition());
 
-        shader->CreateUniform("u_Model", ShaderDataType::Mat4, model);
+        scene.AddLight("point l", pl);
+        /*shader->CreateUniform("u_Model", ShaderDataType::Mat4, model);
         shader->CreateUniform("u_View", ShaderDataType::Mat4, view);
         shader->CreateUniform("u_Proj", ShaderDataType::Mat4, proj);
-        shader->CreateUniform("u_NormalMat", ShaderDataType::Mat4, normal_mat);
+        shader->CreateUniform("u_NormalMat", ShaderDataType::Mat4, normal_mat);*/
         //shader->AddLight(pl);
         //shader->AddLight(dl);
-        shader->AddLight(sl);
-        shader->CreateUniform(&scnobj.GetMaterial());
-        shader->CreateUniform("u_CameraPos", ShaderDataType::Float3, cam_pos);
+        //shader->AddLight(sl);
+        //shader->CreateUniform(&scnobj.GetMaterial());
+        //shader->CreateUniform("u_CameraPos", ShaderDataType::Float3, cam_pos);
         glm::vec4 dir({ 0.0f, 0.0f, 0.0f, 1.0f });
 
         //scnobj.SetScale({ .7f, .7f, .7f });
         //scnobj.SetPosition({ 0.0f, -9.0f, 0.0f });
-        scnobj.SetRotation(glm::quat({ glm::radians(0.0f), glm::radians(0.0f), glm::radians(0.0f) }));
+        //scnobj.SetRotation(glm::quat({ glm::radians(0.0f), glm::radians(0.0f), glm::radians(0.0f) }));
 
         float a = 0.07f;
 
@@ -106,22 +110,22 @@ namespace Chroma
         {
             m_window->OnUpdate();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            scnobj.RotateAngleAxis(glm::radians(2.0f), glm::vec3(0.0, 1.0, 0.0));
+            scnobj->RotateAngleAxis(glm::radians(2.0f), glm::vec3(0.0, 1.0, 0.0));
             //dir = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
             /*cam->SetPosition(glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(cam->GetPosition(), 1.0f));
             cam->SetDirection(dir);*/
             
-            *cam_pos = cam->GetPosition();
+            /**cam_pos = cam->GetPosition();
             *proj = cam->GetProjectionMatrix();
             *view = cam->GetViewMatrix();
             *model = scnobj.GetModelMatrix();
-            *normal_mat = (glm::transpose(glm::inverse(*model)));
+            *normal_mat = (glm::transpose(glm::inverse(*model)));*/
 
-            shader->UpdateUniforms();
-            shader->Bind();
+            /*shader->UpdateUniforms();
+            shader->Bind();*/
 
 
-            scnobj.SetPosition({ -13.0, 0.0f, 0.0f });
+            /*scnobj.SetPosition({ -13.0, 0.0f, 0.0f });
             *model = scnobj.GetModelMatrix();
             *normal_mat = (glm::transpose(glm::inverse(*model)));
             shader->UpdateUniforms();
@@ -134,7 +138,9 @@ namespace Chroma
             *normal_mat = (glm::transpose(glm::inverse(*model)));
             shader->UpdateUniforms();
 
-            scnobj.Draw(DrawMode::TRI);
+            scnobj.Draw(DrawMode::TRI);*/
+            //texture->Bind();
+            scene.Render();
         }
 
         delete shader;

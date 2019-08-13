@@ -9,6 +9,7 @@
 
 namespace Chroma
 {
+
     struct Material
     {
         std::string shader_var_name;
@@ -24,6 +25,18 @@ namespace Chroma
     class Shader
     {
     public:
+        //Default uniform names for auto generated/loaded shaders
+        static const std::string MODEL_SH;
+        static const std::string VIEW_SH;
+        static const std::string PROJ_SH;
+        static const std::string NORM_MAT_SH;
+        static const std::string CAM_POS_SH;
+
+        //Default Layouts for auto generated/loaded shaders
+        static const unsigned int POS_LAY = 0;
+        static const unsigned int NORM_LAY = 1;
+        static const unsigned int TEXC_LAY = 2;
+
         static inline Shader* ReadAndBuildShaderFromFile
         (const std::string& vertex_path, const std::string& fragment_path) 
         {
@@ -41,9 +54,9 @@ namespace Chroma
         void Unbind() const;
         void CreateUniform(std::string name, ShaderDataType type, void* data);
         void CreateUniform(Material* mat);
-        void AddLight(DirectionalLight * lig);
-		void AddLight(PointLight * lig);
-		void AddLight(SpotLight * lig);
+        void AddLight(std::shared_ptr<DirectionalLight> lig);
+		void AddLight(std::shared_ptr<PointLight> lig);
+		void AddLight(std::shared_ptr<SpotLight> lig);
         void UpdateUniforms();
 
     private:
@@ -67,8 +80,8 @@ namespace Chroma
 
         uint32_t m_renderer_id;
         std::vector<Uniform> m_uniforms;
-        std::vector<DirectionalLight*> m_dir_lights;
-        std::vector<PointLight*> m_point_lights;
-        std::vector<SpotLight*> m_spot_lights;
+        int num_dir_lights = 0;
+        int num_point_lights = 0;
+        int num_spot_lights = 0;
     };
 }
