@@ -6,12 +6,7 @@
 
 #include <chroma/main/AssetImporter.h>
 #include <chroma/main/Log.h>
-#include <chroma/openGL/OpenGLBuffer.h>
-#include <chroma/openGL/OpenGLVertexArrayObject.h>
-#include <chroma/renderer/Camera.h>
-#include <chroma/renderer/Texture.h>
-#include <chroma/renderer/SceneObject.h>
-#include <chroma/renderer/Shader.h>
+#include <chroma/renderer/Scene.h>
 
 #include <fstream>
 #include <string>
@@ -22,7 +17,7 @@ namespace Chroma
 {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
+    class Scene;
     Application* Application::s_instance = nullptr;
 
     Application::Application()
