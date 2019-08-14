@@ -20,6 +20,7 @@ set (main_sources
      src/chroma/main/Application.cpp
      src/chroma/main/AssetImporter.cpp
      src/chroma/main/AssetImporter.h
+     src/chroma/main/TimeStep.h
 )
 
 source_group ("main\\" FILES
@@ -90,6 +91,7 @@ source_group ("window\\" FILES
 set(renderer_sources
     src/chroma/renderer/RenderContext.h
     src/chroma/renderer/Layer.h
+     src/chroma/renderer/Layer.cpp
     src/chroma/renderer/Shader.h
     src/chroma/renderer/Shader.cpp
     src/chroma/renderer/Buffer.h
@@ -100,6 +102,8 @@ set(renderer_sources
     src/chroma/renderer/Light.h
     src/chroma/renderer/SceneObject.h
     src/chroma/renderer/SceneObject.cpp
+    src/chroma/renderer/LayerStack.h
+    src/chroma/renderer/LayerStack.cpp
 )
 
 source_group ("renderer\\" FILES

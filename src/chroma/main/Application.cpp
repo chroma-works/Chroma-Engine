@@ -48,56 +48,25 @@ namespace Chroma
         Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/phong/phong.vert", "../assets/shaders/phong/phong.frag");
 
         //Model import
-        Mesh* mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/rabbit.obj");
-        Texture* texture = new Texture("../assets/textures/crate.jpg");
+        Mesh* r_mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/rabbit.obj");
         Material* mat = new Material("u_Material",
-            glm::vec3({ 0.0f, 0.5f, 0.8f }), glm::vec3({ 0.0f, 0.5f, 0.8f }), glm::vec3({ 0.8f, 0.8f, 0.8f }), 90.0f);
-        SceneObject scnobj = SceneObject(*mesh, "rabbit");
-        scnobj.SetTexture(*texture);
-        scnobj.SetMaterial(*mat);
+            glm::vec3({ 0.8f, 0.8f, 0.8f }), glm::vec3({ 0.8f, 0.8f, 0.8f }), glm::vec3({ 1.0f, 1.0f, 1.0f }), 90.0f);
+        std::shared_ptr<SceneObject> rabbit = std::make_shared<SceneObject>(*r_mesh, "rabbit");
 
-        //Vertex positions buffer
-        OpenGLVertexBuffer* vertex_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_positions.data(), 
-            mesh->m_vertex_positions.size() * sizeof(GLfloat) * 3);
+        //rabbit->SetTexture(*texture);
+        rabbit->SetMaterial(*mat);
 
-        VertexAttribute layout_attribute("in_Position", 0, ShaderDataType::Float3, GL_FALSE);
-        VertexBufferLayout vertex_buffer_layout;
-        vertex_buffer_layout.PushAttribute(layout_attribute);
-        vertex_buffer->SetBufferLayout(vertex_buffer_layout);
+        Mesh* b_mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/box.obj");
+        Texture* texture = new Texture("../assets/textures/crate.jpg");
+        std::shared_ptr<SceneObject> box = std::make_shared<SceneObject>(*b_mesh, "box");
 
-        //Vertex normals buffer
-        OpenGLVertexBuffer* normal_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_normals.data(),
-            mesh->m_vertex_normals.size() * sizeof(GLfloat) * 3);
+        box->SetTexture(*texture);
+        box->SetMaterial(*mat);
 
-        VertexAttribute layout_attribute2("in_Normal", 1, ShaderDataType::Float3, GL_FALSE);
-        VertexBufferLayout vertex_buffer_layout2;
-        vertex_buffer_layout2.PushAttribute(layout_attribute2);
-        normal_buffer->SetBufferLayout(vertex_buffer_layout2);
+        Scene scene("The scene", shader);
+        scene.AddSceneObject("rabbit", rabbit);
+        scene.AddSceneObject("box", box);
 
-        //Vertex colors buffer
-        OpenGLVertexBuffer* tex_coord_buffer = new OpenGLVertexBuffer((void*)mesh->m_vertex_texcoords.data(),
-            mesh->m_vertex_texcoords.size() * sizeof(GLfloat) * 2);
-
-        VertexAttribute layout_attribute3("in_TexCoord", 2, ShaderDataType::Float2, GL_FALSE);
-        VertexBufferLayout vertex_buffer_layout3;
-        vertex_buffer_layout3.PushAttribute(layout_attribute3);
-        tex_coord_buffer->SetBufferLayout(vertex_buffer_layout3);
-
-        //index buffer
-        OpenGLIndexBuffer* index_buffer = new OpenGLIndexBuffer(mesh->m_indices.data(),mesh->m_indices.size());
-        //OpenGLIndexBuffer* index_buffer = new OpenGLIndexBuffer(indices, 36);
-
-        //vertex array object
-        OpenGLVertexArrayObject vao;
-        vao.AddVertexBuffer(vertex_buffer);
-        vao.AddVertexBuffer(normal_buffer);
-        vao.AddVertexBuffer(tex_coord_buffer);
-        vao.SetIndexBuffer(index_buffer);
-
-        vertex_buffer->Unbind();//To prove VAO works
-        normal_buffer->Unbind();
-        index_buffer->Unbind();
-        
         /*glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);*/
         glEnable(GL_DEPTH_TEST);//TODO: Create an wrapper to encapsulate RenderCommand ??
@@ -109,74 +78,53 @@ namespace Chroma
         glm::mat4* proj = new glm::mat4(1.0f);
         glm::mat4* normal_mat = new glm::mat4(1.0f);
 
-        CameraManager* cam_mngr = CameraManager::GetInstance();
-        PerspectiveCamera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(), 1.0f * m_window->GetHeight(), 0.1f, 300.0f);
+        PerspectiveCamera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(),
+            1.0f * m_window->GetHeight(), 0.1f, 300.0f);
         //OrthographicCamera cam2(-0.8f, 0.8f, -0.9, 0.9, -10, 10);
-        cam->SetPosition({ 0.0f, 0.0f, 40.0f });
+        cam->SetPosition({ -20.0f, 10.0f, 50.0f });
+        scene.AddCamera("pers-cam", cam);
         //cam2.SetPosition({ 0.0f, 0.0f, 3.0f });
-        
-        glm::vec3* light_pos = new glm::vec3(0.0f, 0.0f, 40.0f);
-        PointLight* pl = new PointLight(*light_pos, glm::vec3(0.1f, 0.1f, 0.1f),
-            glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
 
-        glm::vec3* light_dir = new glm::vec3(-30.0f, 0.0f, -40.0f);
-        DirectionalLight* dl = new DirectionalLight(*light_dir, glm::vec3(0.1f, 0.1f, 0.1f),
-            glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+        std::shared_ptr<PointLight> pl = std::make_shared<PointLight>(glm::vec3(0.0f, 0.0f, 40.0f), glm::vec3(0.1f, 0.1f, 0.1f),
+            glm::vec3(0.6f, 0.5f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f));
 
-        glm::vec3* light_pos2 = new glm::vec3(0.0f, 0.0f, 40.0f);
-        glm::vec3* light_dir2 = new glm::vec3(0.0f, 0.0f, -11.0f);
-        SpotLight* sl = new SpotLight(*light_pos2, *light_dir2, glm::vec3(0.1f, 0.1f, 0.1f),
-            glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+        std::shared_ptr<DirectionalLight> dl = std::make_shared<DirectionalLight>(glm::vec3(-30.0f, 0.0f, -40.0f),
+            glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+
+        std::shared_ptr<SpotLight> sl = std::make_shared<SpotLight>(glm::vec3(-20.0f, 0.0f, 40.0f), glm::vec3(0.0f, 0.0f, -1.0f),
+            glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
 
         glm::vec3* cam_pos = new glm::vec3(cam->GetPosition());
 
-        shader->CreateUniform("u_Model", ShaderDataType::Mat4, model);
-        shader->CreateUniform("u_View", ShaderDataType::Mat4, view);
-        shader->CreateUniform("u_Proj", ShaderDataType::Mat4, proj);
-        shader->CreateUniform("u_NormalMat", ShaderDataType::Mat4, normal_mat);
-        //shader->AddLight(pl);
-        shader->AddLight(dl);
-        //shader->AddLight(sl);
-        shader->CreateUniform(&scnobj.GetMaterial());
-        shader->CreateUniform("u_CameraPos", ShaderDataType::Float3, cam_pos);
+        scene.AddLight("spot l", sl);
+        //scene.AddLight("directional l", dl);
+        //scene.AddLight("point l", pl);
         glm::vec4 dir({ 0.0f, 0.0f, 0.0f, 1.0f });
 
-        scnobj.SetScale({ .7f, .7f, .7f });
-        scnobj.SetPosition({ 0.0f, -9.0f, 0.0f });
-        scnobj.SetRotation(glm::quat({ glm::radians(-90.0f), glm::radians(0.0f), glm::radians(0.0f) }));
+        rabbit->SetScale({ .4f, .4f, .4f });
+        rabbit->SetPosition({ -20.0f, -9.0f, 0.0f });
+        rabbit->SetRotation(glm::quat({ glm::radians(-90.0f), glm::radians(90.0f), glm::radians(0.0f) }));
 
-        float a = 0.04f;
+        box->SetScale({ .9f, .9f, .9f });
+        box->SetPosition({ 35.0f, 0.0f, 0.0f });
+        box->RotateAngleAxis(glm::radians(180.0), glm::vec3(0.0, 0.0, 1.0));
+
+        float a = 0.07f;
 
         while (m_running)
         {
-            scnobj.RotateAngleAxis(glm::radians(2.0f), glm::vec3(0.0, 1.0, 0.0));
-            *model = scnobj.GetModelMatrix();
-            //dir = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
-            //*light_pos = glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(*light_pos, 1.0f);
-            /*cam->SetPosition(glm::rotate(glm::mat4(1.0f), a, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(cam->GetPosition(), 1.0f));
-            cam->SetDirection(dir);*/
-            *cam_pos = cam->GetPosition();
-            //a += .01f;
-            *proj = cam->GetProjectionMatrix();
-            *view = cam->GetViewMatrix();
-            *normal_mat = (glm::transpose(glm::inverse(*model)));
-
             m_window->OnUpdate();
-            shader->UpdateUniforms();
-
-            //vertexarrayobject is bounded and it keeps all the attribute information
-            vao.Bind();
-            shader->Bind();
-            texture->Bind();
-            
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glDrawElements(GL_TRIANGLES, index_buffer->GetSize(), GL_UNSIGNED_INT, NULL);
+            //rabbit->RotateAngleAxis(glm::radians(2.0f), glm::vec3(0.0, 1.0, 0.0));
+            rabbit->Translate({0.1, 0.0, 0.0});
+            sl->position += glm::vec3({ 0.1, 0.0, 0.0 });
+            cam->SetPosition(cam->GetPosition() + glm::vec3({ 0.1, 0.0, 0.0 }));
+            cam->SetDirection(rabbit->GetPosition());
+
+            scene.Render();
         }
 
         delete shader;
-        delete vertex_buffer;
-        delete normal_buffer;
-        delete index_buffer;
 
     }
 

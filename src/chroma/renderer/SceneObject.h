@@ -3,7 +3,11 @@
 #include <chroma/geometry/Mesh.h>
 #include <chroma/renderer/Texture.h>
 #include <chroma/renderer/Shader.h>
+#include <chroma/renderer/Buffer.h>
+#include <chroma/openGL/OpenGLBuffer.h>
+#include <chroma/openGL/OpenGLVertexArrayObject.h>
 
+#include <stdio.h>
 #include <string>
 #include <thirdparty/glm/glm/glm.hpp>
 #include <thirdparty/glm/glm/gtc/quaternion.hpp>
@@ -11,6 +15,9 @@
 
 namespace Chroma
 {
+    enum DrawMode { TRI = GL_TRIANGLES, TRI_STRIP = GL_TRIANGLE_STRIP, 
+        TRI_FAN = GL_TRIANGLE_FAN, LIN = GL_LINE, LIN_LOOP = GL_LINE_LOOP, LIN_STRIP = GL_LINE_STRIP };
+
     class SceneObject
     {
     public:
@@ -19,6 +26,7 @@ namespace Chroma
             glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f),
             glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f));
         //~SceneObject();
+
 
         inline void HideInEditor(bool hide) { m_visible_in_editor = hide; }
         inline void SetVisible(bool visible) { m_visible = visible; }
@@ -52,6 +60,8 @@ namespace Chroma
 
         inline Material GetMaterial() { return m_material; }
 
+        void Draw(DrawMode mode);
+
 
     private:
         void RecalculateModelMatrix();
@@ -69,9 +79,12 @@ namespace Chroma
         glm::mat4 m_model_matrix = glm::mat4(1.0);
 
         Texture m_texture;
-        Material m_material = Material("u_Material", glm::vec3(1.0f, 1.0f, 1.0f), 
-            glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f), 80.0f);
+        Material m_material = Material();
+
         Mesh m_mesh; //TODO: multiple mesh ?
 
+        OpenGLVertexArrayObject m_vao;
+        std::vector<std::shared_ptr<VertexBuffer>> m_vertex_buffers;
+        std::shared_ptr<IndexBuffer> m_index_buffer;
     };
 }

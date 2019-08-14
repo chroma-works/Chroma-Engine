@@ -37,7 +37,7 @@ namespace Chroma
         m_view_projection_matrix = m_projection_matrix * m_view_matrix;
     }
 
-    CameraManager* CameraManager::s_instance = 0;
+    /*CameraManager* CameraManager::s_instance = 0;
 
     CameraManager::CameraManager()
     {}
@@ -83,6 +83,6 @@ namespace Chroma
             }
         }
 
-    }
+    }*/
 
 }
