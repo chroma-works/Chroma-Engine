@@ -13,12 +13,13 @@ namespace Chroma
         m_scene_data->m_shader->CreateUniform(Shader::PROJ_SH, ShaderDataType::Mat4, m_scene_data->GetProj());
         m_scene_data->m_shader->CreateUniform(Shader::NORM_MAT_SH, ShaderDataType::Mat4, m_scene_data->GetNormalMat());
         m_scene_data->m_shader->CreateUniform(Shader::CAM_POS_SH, ShaderDataType::Float3, m_scene_data->GetCamPos());
+        m_scene_data->m_shader->CreateUniform((m_scene_data->GetMaterial()));
     }
 
     Scene::~Scene()
     {
         delete m_scene_data;
-        //delete[] m_cameras;//TODO!!!
+        m_cameras.erase(m_cameras.begin(), m_cameras.end());
     }
 
     void Scene::AddSceneObject(std::string name, std::shared_ptr<SceneObject> object)
