@@ -79,8 +79,8 @@ namespace Chroma
         glm::mat4 m_model_matrix = glm::mat4(1.0);
 
         Texture m_texture;
-        Material m_material = Material("u_Material", glm::vec3(1.0f, 1.0f, 1.0f), 
-            glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f), 80.0f);
+        Material m_material = Material();
+
         Mesh m_mesh; //TODO: multiple mesh ?
 
         OpenGLVertexArrayObject m_vao;
