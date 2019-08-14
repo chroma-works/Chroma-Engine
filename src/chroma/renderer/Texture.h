@@ -19,8 +19,9 @@ public:
 
     int inline GetWidth() const { return m_width; }
     int inline GetHeigth() const { return m_heigth; }
+
 private:
-    unsigned int m_rendererID;
+    unsigned int m_renderer_id;
     std::string m_filepath;
     unsigned char* m_localbuffer;
     int m_width, m_heigth, m_BPP;
