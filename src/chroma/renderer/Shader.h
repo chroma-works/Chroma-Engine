@@ -20,6 +20,12 @@ namespace Chroma
 
         Material(std::string name, glm::vec3 ambi, glm::vec3 diff, glm::vec3 spec, float shin)
             :shader_var_name(name), ambient(ambi), diffuse(diff), specular(spec), shininess(shin) {}
+
+        Material() 
+            :shader_var_name("u_Material"), ambient(glm::vec3(1.0f, 1.0f, 1.0f)),
+                diffuse(glm::vec3(1.0f, 1.0f, 1.0f)), specular(glm::vec3(1.0f)), shininess(60.0f)
+        {}
+
     };
 
     class Shader
@@ -31,6 +37,7 @@ namespace Chroma
         static const std::string PROJ_SH;
         static const std::string NORM_MAT_SH;
         static const std::string CAM_POS_SH;
+        static const std::string MATERIAL_SH;
 
         //Default Layouts for auto generated/loaded shaders
         static const unsigned int POS_LAY = 0;
@@ -58,6 +65,34 @@ namespace Chroma
 		void AddLight(std::shared_ptr<PointLight> lig);
 		void AddLight(std::shared_ptr<SpotLight> lig);
         void UpdateUniforms();
+
+        //Apply RULE OF THREE
+        //Delete the copy constructor/assignment.
+        Shader(const Shader &) = delete;
+        Shader &operator=(const Shader &) = delete;
+
+        Shader(Shader &&other)
+        {
+            m_renderer_id = other.m_renderer_id;
+            other.m_renderer_id = 0;
+            m_uniforms = other.m_uniforms;
+            num_dir_lights = other.num_dir_lights;
+            num_spot_lights = other.num_spot_lights;
+            num_point_lights = other.num_point_lights;
+        }
+
+        Shader& operator=(Shader &&other)
+        {
+            if (this != &other)
+            {
+                Unbind();
+                std::swap(m_renderer_id, other.m_renderer_id);
+                std::swap(m_uniforms, other.m_uniforms);
+                std::swap(num_dir_lights, other.num_dir_lights);
+                std::swap(num_spot_lights, other.num_spot_lights);
+                std::swap(num_point_lights, other.num_point_lights);
+            }
+        }
 
     private:
         struct Uniform

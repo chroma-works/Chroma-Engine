@@ -16,6 +16,7 @@ namespace Chroma
     const std::string Shader::PROJ_SH = "u_Proj";
     const std::string Shader::NORM_MAT_SH = "u_NormalMat";
     const std::string Shader::CAM_POS_SH = "u_CameraPos";
+    const std::string Shader::MATERIAL_SH = "u_Material";
 
     Shader::Shader(const std::string& vertex_shader_data, const std::string& fragment_shader_data, bool read_from_file)
     {
@@ -104,7 +105,7 @@ namespace Chroma
         Uniform specular(mat->shader_var_name + ".specular", ShaderDataType::Float3);
         specular.data = (void*)&mat->specular;
         Uniform shininess(mat->shader_var_name + ".shininess", ShaderDataType::Float);
-        shininess.data = (void*)&mat->shininess; //TODO SHININESS ÇALIÞMIYOSA BURDA SORUN VAR!!!
+        shininess.data = (void*)&mat->shininess;
 
         AddUniform(ambient);
         AddUniform(diffuse);
