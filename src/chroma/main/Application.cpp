@@ -50,7 +50,7 @@ namespace Chroma
         //Model import
         Mesh* r_mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/rabbit.obj");
         Material* mat = new Material("u_Material",
-            glm::vec3({ 0.8f, 0.8f, 0.8f }), glm::vec3({ 0.9f, 0.3f, 0.6f }), glm::vec3({ 0.4f, 0.4f, 0.4f }), 90.0f);
+            glm::vec3({ 0.8f, 0.8f, 0.8f }), glm::vec3({ 0.8f, 0.8f, 0.8f }), glm::vec3({ 1.0f, 1.0f, 1.0f }), 90.0f);
         std::shared_ptr<SceneObject> rabbit = std::make_shared<SceneObject>(*r_mesh, "rabbit");
 
         //rabbit->SetTexture(*texture);
