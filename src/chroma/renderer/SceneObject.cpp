@@ -7,7 +7,7 @@ namespace Chroma
     SceneObject::SceneObject(Mesh mesh, std::string name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale)
         : m_mesh(mesh), m_name(name), m_position(pos), m_rotation(glm::quat(rot)), m_scale(scale)
     {
-        m_texture = Texture("../assets/textures/white.jpg");//Set texture to white to avoid all black shaded objects
+        m_texture = Texture("../assets/textures/white.png");//Set texture to white to avoid all black shaded objects
 
         //Vertex positions buffer
         std::shared_ptr<OpenGLVertexBuffer> position_buffer = std::make_shared<OpenGLVertexBuffer>((void*)m_mesh.m_vertex_positions.data(),
