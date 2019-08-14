@@ -54,12 +54,13 @@ namespace Chroma
         //TODO:Render for multiple cams
         m_scene_data->SetView(m_cameras.begin()->second->GetViewMatrix());
         m_scene_data->SetProj(m_cameras.begin()->second->GetProjectionMatrix());
+        m_scene_data->SetCamPos(m_cameras.begin()->second->GetPosition());
         for (std::pair<std::string, std::shared_ptr<SceneObject>> element : m_scene_objects)
         {
             std::shared_ptr<SceneObject> scn_obj = element.second;
             
             m_scene_data->SetModel(scn_obj->GetModelMatrix());
-            m_scene_data->SetMaterial(&scn_obj->GetMaterial());
+            m_scene_data->SetMaterial(scn_obj->GetMaterial());
 
             m_scene_data->m_shader->UpdateUniforms();
             m_scene_data->m_shader->Bind();
