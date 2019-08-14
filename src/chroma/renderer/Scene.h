@@ -70,9 +70,9 @@ class Camera;
                 *m_proj = mat;
                 //m_shader.UpdateUniforms();
             }
-            inline void SetMaterial(Material* material)
+            inline void SetMaterial(Material material)
             {
-                m_material = material;
+                *m_material = material;
             }
             inline void SetCamPos(glm::vec3 cam_pos)
             {
@@ -92,7 +92,7 @@ class Camera;
             glm::mat4* m_view = new glm::mat4(1.0f);
             glm::mat4* m_proj = new glm::mat4(1.0f);
             glm::mat4* m_normal_mat = new glm::mat4(1.0f);
-            Material* m_material;
+            Material* m_material = new Material();
             glm::vec3* m_cam_pos = new glm::vec3(0.0f);
         };
         SceneData* m_scene_data;
