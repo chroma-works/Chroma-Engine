@@ -129,6 +129,7 @@ add_executable (chroma
     ${thirdparty_sources}
     ${event_sources}
     ${geometry_sources}
+    src/Chroma.h
 )
 
 # Find and link to OpenGL
