@@ -18,11 +18,13 @@ namespace Chroma
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
     class Scene;
+
     Application* Application::s_instance = nullptr;
 
     Application::Application()
     {
         CH_ASSERT(!s_instance, "Application already running");
+        s_instance = this;
 
         Chroma::WindowProps props = Chroma::WindowProps();
         m_window = new Chroma::Window(props);
@@ -31,16 +33,18 @@ namespace Chroma
         m_running = true;
     }
 
-    Application::~Application()
+    void Application::PushLayer(Layer* layer)
     {
+        m_layer_stack.PushLayer(layer);
     }
+
 
     void Chroma::Application::Run()
     {
         glClearColor(0.184f, 0.062f, 0.129f, 1.0f);
 
         // Create and compile our GLSL program from the shaders
-        Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/phong/phong.vert", "../assets/shaders/phong/phong.frag");
+        /*Shader* shader = Shader::ReadAndBuildShaderFromFile("../assets/shaders/phong/phong.vert", "../assets/shaders/phong/phong.frag");
 
         //Model import
         Mesh* r_mesh = AssetImporter::LoadMeshFromOBJ("../assets/models/rabbit.obj");
@@ -64,14 +68,7 @@ namespace Chroma
 
         /*glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);*/
-        glEnable(GL_DEPTH_TEST);//TODO: Create an wrapper to encapsulate RenderCommand ??
-
-        glm::mat4* model = new glm::mat4(1.0);
-        *model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0f));
-        //*model = glm::rotate(*model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        glm::mat4* view = new glm::mat4(1.0f);
-        glm::mat4* proj = new glm::mat4(1.0f);
-        glm::mat4* normal_mat = new glm::mat4(1.0f);
+        /*glEnable(GL_DEPTH_TEST);//TODO: Create an wrapper to encapsulate RenderCommand ??
 
         PerspectiveCamera* cam = new PerspectiveCamera(1.0f * m_window->GetWidth(),
             1.0f * m_window->GetHeight(), 0.1f, 300.0f);
@@ -102,13 +99,21 @@ namespace Chroma
 
         box->SetScale({ .9f, .9f, .9f });
         box->SetPosition({ 35.0f, 0.0f, 0.0f });
-        box->RotateAngleAxis(glm::radians(180.0), glm::vec3(0.0, 0.0, 1.0));
+        box->RotateAngleAxis(glm::radians(180.0), glm::vec3(0.0, 0.0, 1.0));*/
 
         float a = 0.07f;
 
         while (m_running)
         {
+            float time = (float)glfwGetTime();
+            Timestep timestep = time - m_last_frame_time;
+            m_last_frame_time = time;
+
+            for (Layer* layer : m_layer_stack)
+                layer->OnUpdate(timestep);
+
             m_window->OnUpdate();
+            /*m_window->OnUpdate();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             //rabbit->RotateAngleAxis(glm::radians(2.0f), glm::vec3(0.0, 1.0, 0.0));
             rabbit->Translate({0.1, 0.0, 0.0});
@@ -116,10 +121,10 @@ namespace Chroma
             cam->SetPosition(cam->GetPosition() + glm::vec3({ 0.1, 0.0, 0.0 }));
             cam->SetDirection(rabbit->GetPosition());
 
-            scene.Render();
+            scene.Render();*/
         }
 
-        delete shader;
+        //delete shader;
 
     }
 
@@ -128,6 +133,13 @@ namespace Chroma
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
         dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+
+        for (auto it = m_layer_stack.end(); it != m_layer_stack.begin(); )
+        {
+            (*--it)->OnEvent(e);
+            if (e.handled)
+                break;
+        }
         CH_TRACE(e.ToString());
     }
 
