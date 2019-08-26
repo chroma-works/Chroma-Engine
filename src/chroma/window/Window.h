@@ -38,6 +38,8 @@ namespace Chroma
 
         void OnUpdate();
 
+        inline GLFWwindow* GetWindowHandle() const { return m_window_handle; }
+
         inline void SetEventCallback(std::function<void(Event&)> callback) { m_data.EventCallback = callback; }
 
         void SetVSync(bool enabled);
