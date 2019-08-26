@@ -1,3 +1,4 @@
+#include <thirdparty/glad/include/glad/glad.h>
 #include "OpenGLVertexArrayObject.h"
 
 namespace Chroma

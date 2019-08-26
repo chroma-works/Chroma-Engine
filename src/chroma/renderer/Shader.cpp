@@ -1,5 +1,6 @@
 #pragma once
 
+#include <thirdparty/glad/include/glad/glad.h>
 #include <chroma/renderer/Shader.h>
 #include <chroma/main/Log.h>
 #include <sstream>

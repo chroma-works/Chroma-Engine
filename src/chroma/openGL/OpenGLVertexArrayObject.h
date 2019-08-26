@@ -1,6 +1,4 @@
 #pragma once
-
-#include <thirdparty/glad/include/glad/glad.h>
 #include <chroma/openGL/OpenGLBuffer.h>
 
 namespace Chroma
@@ -19,7 +17,7 @@ namespace Chroma
 
     private:
 
-        static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type);
+        static unsigned int ShaderDataTypeToOpenGLBaseType(ShaderDataType type);
 
         std::vector<std::shared_ptr<OpenGLVertexBuffer>> m_vertex_buffers;
         std::shared_ptr<OpenGLIndexBuffer> m_index_buffer;

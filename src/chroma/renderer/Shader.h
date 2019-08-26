@@ -1,6 +1,5 @@
 #pragma once
 
-#include <thirdparty/glad/include/glad/glad.h>
 #include <stdio.h>
 #include <string>
 #include <chroma/renderer/Buffer.h>

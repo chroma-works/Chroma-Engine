@@ -1,7 +1,6 @@
 #pragma once
 
 #include <chroma/renderer/Buffer.h>
-#include <thirdparty/glad/include/glad/glad.h>
 
 namespace Chroma
 {

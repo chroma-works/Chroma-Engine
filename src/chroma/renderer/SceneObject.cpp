@@ -1,4 +1,5 @@
 #include "SceneObject.h"
+#include <thirdparty/glad/include/glad/glad.h>
 #include <thirdparty/glm/glm/gtc/matrix_transform.hpp>
 #include <thirdparty/glm/glm/gtx/quaternion.hpp>
 
