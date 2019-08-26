@@ -13,13 +13,15 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release)
 include_directories(src)
 
 set (main_sources
-     src/chroma/main/main.cpp
-     src/chroma/main/Log.h
-     src/chroma/main/Log.cpp
      src/chroma/main/Application.h
      src/chroma/main/Application.cpp
      src/chroma/main/AssetImporter.cpp
      src/chroma/main/AssetImporter.h
+     src/chroma/main/Input.h
+     src/chroma/main/KeyCodes.h
+     src/chroma/main/Log.h
+     src/chroma/main/Log.cpp
+     src/chroma/main/entry.cpp
      src/chroma/main/TimeStep.h
 )
 
@@ -82,7 +84,10 @@ source_group ("events\\" FILES
 
 set(window_sources
     src/chroma/window/Window.h
-    src/chroma/window/Window.cpp)
+    src/chroma/window/Window.cpp
+    src/chroma/window/WindowsInput.h
+    src/chroma/window/WindowsInput.cpp
+    )
 
 source_group ("window\\" FILES
     ${window_sources}
@@ -91,7 +96,7 @@ source_group ("window\\" FILES
 set(renderer_sources
     src/chroma/renderer/RenderContext.h
     src/chroma/renderer/Layer.h
-     src/chroma/renderer/Layer.cpp
+    src/chroma/renderer/Layer.cpp
     src/chroma/renderer/Shader.h
     src/chroma/renderer/Shader.cpp
     src/chroma/renderer/Buffer.h
@@ -121,6 +126,15 @@ source_group ("geometry\\" FILES
     ${geometry_sources}
 )
 
+#not ideal to include like this but make do...
+set(sandbox_sources
+    sandbox/src/Sandbox.cpp
+)
+
+source_group ("sandbox\\" FILES
+    ${sandbox_sources}
+)
+
 add_executable (chroma
     ${main_sources}
     ${opengl_sources}
@@ -129,6 +143,7 @@ add_executable (chroma
     ${thirdparty_sources}
     ${event_sources}
     ${geometry_sources}
+    ${sandbox_sources}
     src/Chroma.h
 )
 
